@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="eg-lms-api:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="eg-lms-api-0.0.1-SNAPSHOT.war">
-      <element id="artifact" artifact-name="eg-lms-api:war exploded" />
-    </root>
-  </artifact>
-</component>
