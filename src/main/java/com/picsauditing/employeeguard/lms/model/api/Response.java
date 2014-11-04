@@ -1,23 +1,13 @@
 package com.picsauditing.employeeguard.lms.model.api;
 
-public class Response {
+public interface Response {
 
-  int id;
-  String status;
+	int getId();
 
-  public int getId() {
-    return id;
-  }
+	void setId(int id);
 
-  public void setId(int id) {
-    this.id = id;
-  }
+	String getStatus();
 
-  public String getStatus() {
-    return status;
-  }
+	void setStatus(String status);
 
-  public void setStatus(String status) {
-    this.status = status;
-  }
 }
