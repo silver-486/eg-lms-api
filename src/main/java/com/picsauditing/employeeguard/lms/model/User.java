@@ -1,89 +1,146 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Set;
 
-public class User {
+@Entity
+public class User implements Serializable {
 
-	private String userId;
-	private String picsUserID;
-	private String username;
-	private UserType type;
-	private Set<Integer> accountIds;
-	private String firstName;
-	private String lastName;
-	private Locale locale;
-	private String email;
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
+  private long id;
 
-	public String getUserId() {
-		return userId;
-	}
+  private static final long serialVersionUID = 1L;
+  private String userId;
+  private String picsUserID;
+  private String username;
+  private UserType type;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  @Transient
+  private Set<Integer> accountIdSet;
+  private String accountIds;
 
-	public String getPicsUserID() {
-		return picsUserID;
-	}
+  private String firstName;
+  private String lastName;
+  private Locale locale;
+  private String email;
 
-	public void setPicsUserID(String picsUserID) {
-		this.picsUserID = picsUserID;
-	}
+  public static long getSerialVersionUID() {
+    return serialVersionUID;
+  }
 
-	public String getUsername() {
-		return username;
-	}
+  public User() {
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public User(long id, String userId) {
+    this.id = id;
+    this.userId = userId;
+  }
 
-	public UserType getType() {
-		return type;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public void setType(UserType type) {
-		this.type = type;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public Set<Integer> getAccountIds() {
-		return accountIds;
-	}
+  public String getUserId() {
+    return userId;
+  }
 
-	public void setAccountIds(Set<Integer> accountIds) {
-		this.accountIds = accountIds;
-	}
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public String getPicsUserID() {
+    return picsUserID;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public void setPicsUserID(String picsUserID) {
+    this.picsUserID = picsUserID;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public String getUsername() {
+    return username;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public Locale getLocale() {
-		return locale;
-	}
+  public UserType getType() {
+    return type;
+  }
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
+  public void setType(UserType type) {
+    this.type = type;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public Set<Integer> getAccountIdSet() {
+    return accountIdSet;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+  public void setAccountIdSet(Set<Integer> accountIdSet) {
+    this.accountIdSet = accountIdSet;
+  }
+
+  public String getAccountIds() {
+    return accountIds;
+  }
+
+  public void setAccountIds(String accountIds) {
+    this.accountIds = accountIds;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public Locale getLocale() {
+    return locale;
+  }
+
+  public void setLocale(Locale locale) {
+    this.locale = locale;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+      "id=" + id +
+      ", userId='" + userId + '\'' +
+      ", picsUserID='" + picsUserID + '\'' +
+      ", username='" + username + '\'' +
+      ", type=" + type +
+      ", accountIdSet=" + accountIdSet +
+      ", accountIds='" + accountIds + '\'' +
+      ", firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", locale=" + locale +
+      ", email='" + email + '\'' +
+      '}';
+  }
 }
