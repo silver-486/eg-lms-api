@@ -1,8 +1,12 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class LaunchLink {
 
+	@SerializedName("TrainingResourceId")
 	private String trainingResourceId;
+	@SerializedName("LaunchUrl")
 	private String launchLink;
 
 	public String getTrainingResourceId() {

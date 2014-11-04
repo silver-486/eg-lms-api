@@ -1,15 +1,24 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class EmployeeTrainingStatus {
 
+	@SerializedName("Id")
 	private String trainingResourceId;
+	@SerializedName("Type")
 	private TrainingResourceType trainingResourceType;
+	@SerializedName("UserId")
 	private String userId;
+	@SerializedName("EmployeeId")
 	private int picsUserId;
+	@SerializedName("PercentComplete")
 	private float percentComplete;
+	@SerializedName("Status")
 	private String status;
+	@SerializedName("CompletionDate")
 	private Date completionDate;
 
 	public String getTrainingResourceId() {
