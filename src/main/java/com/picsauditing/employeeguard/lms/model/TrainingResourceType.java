@@ -1,7 +1,12 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum TrainingResourceType {
 
-	COURSE, TRAINING_PATH
+	@SerializedName("Course")
+	COURSE,
+	@SerializedName("TrainingPath")
+	TRAINING_PATH
 
 }

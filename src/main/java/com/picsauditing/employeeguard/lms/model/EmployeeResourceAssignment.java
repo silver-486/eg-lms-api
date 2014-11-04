@@ -1,10 +1,16 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class EmployeeResourceAssignment {
 
+	@SerializedName("TrainingResourceId")
 	private String trainingResourceId;
+	@SerializedName("Type")
 	private TrainingResourceType trainingResourceType;
+	@SerializedName("UserId")
 	private String userId;
+	@SerializedName("EmployeeId")
 	private int picsUserId;
 
 	public String getTrainingResourceId() {
