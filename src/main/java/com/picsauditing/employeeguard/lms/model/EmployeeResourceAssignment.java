@@ -4,14 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class EmployeeResourceAssignment {
 
-	@SerializedName("TrainingResourceId")
+	@SerializedName("trainingResourceId")
 	private String trainingResourceId;
-	@SerializedName("Type")
+
+	@SerializedName("type")
 	private TrainingResourceType trainingResourceType;
-	@SerializedName("UserId")
+
+	@SerializedName("userId")
 	private String userId;
-	@SerializedName("EmployeeId")
-	private int picsUserId;
+
+	@SerializedName("employeeId")
+	private int employeeId;
 
 	public String getTrainingResourceId() {
 		return trainingResourceId;
@@ -37,11 +40,11 @@ public class EmployeeResourceAssignment {
 		this.userId = userId;
 	}
 
-	public int getPicsUserId() {
-		return picsUserId;
+	public int getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setPicsUserId(int picsUserId) {
-		this.picsUserId = picsUserId;
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
 }

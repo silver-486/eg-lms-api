@@ -30,7 +30,16 @@ public class Payload {
 		this.data = data;
 	}
 
-	@Override
+  @Override
+  public String toString() {
+    return "Payload{" +
+      "id=" + id +
+      ", command=" + command +
+      ", data='" + data + '\'' +
+      '}';
+  }
+
+  @Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;

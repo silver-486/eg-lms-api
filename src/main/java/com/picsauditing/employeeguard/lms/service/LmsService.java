@@ -1,23 +1,36 @@
 package com.picsauditing.employeeguard.lms.service;
 
+import com.picsauditing.employeeguard.lms.dao.UserRepository;
 import com.picsauditing.employeeguard.lms.model.User;
-import com.picsauditing.employeeguard.lms.model.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
-@Component
-public class LmsService implements ILmsService {
+@Service
+public class LmsService {
 
   @Autowired
-  private UserRepository dao;
+  private UserRepository userRepository;
 
-  @Transactional
-  public User addUser(long id, String username) {
-    User user = new User(id, username);
-    dao.save(user);
-
-    return user;
+  public UserRepository getUserRepository() {
+    return userRepository;
   }
+
+  public void setUserRepository(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  public void test() {
+    userRepository.save(new User(1, "John"));
+
+    Iterable<User> Users = userRepository.findAll();
+//    Iterable<User> Users = repository.findAll();
+    System.out.println("Users found with findAll():");
+    System.out.println("-------------------------------");
+    for (User User : Users) {
+      System.out.println(User);
+    }
+    System.out.println();
+  }
+
 
 }

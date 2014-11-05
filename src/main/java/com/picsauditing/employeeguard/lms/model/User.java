@@ -1,20 +1,27 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.domain.Persistable;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.Set;
 
 @Entity
-public class User implements Serializable {
+@JsonIgnoreProperties({"accountIdSet"})
+//@JsonIgnoreProperties(ignoreUnknown=true)
+public class User/* implements Persistable<Long> */ {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
-  private long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-  private static final long serialVersionUID = 1L;
+//  private transient boolean persisted;
+
+  //@JsonProperty("")
+
   private String userId;
-  private String picsUserID;
   private String username;
   private UserType type;
 
@@ -27,9 +34,6 @@ public class User implements Serializable {
   private Locale locale;
   private String email;
 
-  public static long getSerialVersionUID() {
-    return serialVersionUID;
-  }
 
   public User() {
   }
@@ -39,9 +43,23 @@ public class User implements Serializable {
     this.userId = userId;
   }
 
-  public long getId() {
+
+  //  @Override
+  public Long getId() {
     return id;
   }
+
+/*
+  @Override
+  public boolean isNew() {
+    return !persisted;
+  }
+
+  public User withPersisted(boolean persisted) {
+    this.persisted = persisted;
+    return this;
+  }
+*/
 
   public void setId(long id) {
     this.id = id;
@@ -53,14 +71,6 @@ public class User implements Serializable {
 
   public void setUserId(String userId) {
     this.userId = userId;
-  }
-
-  public String getPicsUserID() {
-    return picsUserID;
-  }
-
-  public void setPicsUserID(String picsUserID) {
-    this.picsUserID = picsUserID;
   }
 
   public String getUsername() {
@@ -132,7 +142,6 @@ public class User implements Serializable {
     return "User{" +
       "id=" + id +
       ", userId='" + userId + '\'' +
-      ", picsUserID='" + picsUserID + '\'' +
       ", username='" + username + '\'' +
       ", type=" + type +
       ", accountIdSet=" + accountIdSet +
