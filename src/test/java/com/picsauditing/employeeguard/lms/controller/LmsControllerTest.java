@@ -78,7 +78,7 @@ public class LmsControllerTest {
 
   private Message mockerMessageTest() {
     Message message = new Message();
-    message.setId(1);
+    message.setId((long) 1);
     Payload payload = new Payload();
 
     User user1 = new User(1, "mike");

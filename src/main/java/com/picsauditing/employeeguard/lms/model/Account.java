@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import java.util.Locale;
 
 @Entity
-@JsonIgnoreProperties({"accountIdSet"})
 public class Account {
 
   @Id

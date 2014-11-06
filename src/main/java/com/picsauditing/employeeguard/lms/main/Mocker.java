@@ -16,19 +16,21 @@ import static com.picsauditing.employeeguard.lms.model.api.Command.ADD_USER;
 
 @Service
 public class Mocker {
+  private long seqId = 0;
+
   public Mocker() {
   }
 
-  public  EmployeeResourceAssignment mockEmployeeResourceAssignment() {
+  public EmployeeResourceAssignment mockEmployeeResourceAssignment() {
     EmployeeResourceAssignment employeeResourceAssignment = new EmployeeResourceAssignment();
     employeeResourceAssignment.setEmployeeId(34);
-    employeeResourceAssignment.setTrainingResourceId("def456");
+    employeeResourceAssignment.setTrainingResourceId(randomId());
     employeeResourceAssignment.setTrainingResourceType(TrainingResourceType.COURSE);
-    employeeResourceAssignment.setUserId("12345678");
+    employeeResourceAssignment.setUserId(randomId());
     return employeeResourceAssignment;
   }
 
-  public  EmployeeTrainingStatus mockEmployeeTrainingStatus() {
+  public EmployeeTrainingStatus mockEmployeeTrainingStatus() {
     EmployeeTrainingStatus employeeTrainingStatus = new EmployeeTrainingStatus();
     employeeTrainingStatus.setCompletionDate(new Date());
     employeeTrainingStatus.setPercentComplete(90);
@@ -36,18 +38,18 @@ public class Mocker {
     employeeTrainingStatus.setStatus("In Progress");
     employeeTrainingStatus.setTrainingResourceId("def456");
     employeeTrainingStatus.setTrainingResourceType(TrainingResourceType.COURSE);
-    employeeTrainingStatus.setUserId("12345678");
+    employeeTrainingStatus.setUserId(randomId());
     return employeeTrainingStatus;
   }
 
-  public  LaunchLink mockLaunchLink() {
+  public LaunchLink mockLaunchLink() {
     LaunchLink launchLink = new LaunchLink();
     launchLink.setTrainingResourceId("def456");
     launchLink.setLaunchLink("https://www.picsorganizer.com/lms/courses/def456");
     return launchLink;
   }
 
-  public  TrainingResource mockTrainingPath() {
+  public TrainingResource mockTrainingPath() {
     TrainingResource trainingResource = new TrainingResource();
     trainingResource.setId("abc123");
     trainingResource.setTitle("Welding II Training Path");
@@ -55,7 +57,7 @@ public class Mocker {
     return trainingResource;
   }
 
-  public  TrainingResource mockTrainingCourse() {
+  public TrainingResource mockTrainingCourse() {
     TrainingResource trainingResource = new TrainingResource();
     trainingResource.setId("def456");
     trainingResource.setTitle("2014 HR Training");
@@ -65,11 +67,15 @@ public class Mocker {
 
   public Message mockerMessageTest() throws JsonProcessingException {
     Message message = new Message();
-    message.setId(1);
+    message.setId(randomId());
+
     Payload payload = new Payload();
-    User user1 = new User(1, "mike");
+
+    User user1 = mockUser();
+
     payload.setCommand(ADD_USER);
 //    payload.setData(toJSON(user1));
+    payload.setId(randomId());
     payload.setData(JSONHelper.toJSONJackson(user1));
 
     Set<Payload> payloads = new HashSet<>();
@@ -78,9 +84,19 @@ public class Mocker {
     return message;
   }
 
+  public long seqId() {
+    return ++seqId;
+  }
+
+  public Long randomId() {
+    int min = 0;
+    int max = 10000;
+    Long r = (long) (Math.random() * (max - min) + min);
+    return r;
+  }
 
 
-  public  User mockUser() {
+  public User mockUser() {
     User user = new User();
     user.setEmail("test@tester.com");
     user.setFirstName("The");

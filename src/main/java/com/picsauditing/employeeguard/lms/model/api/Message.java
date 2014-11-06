@@ -1,25 +1,29 @@
 package com.picsauditing.employeeguard.lms.model.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Set;
 
 public class Message {
 
-	private int id;
-	private Set<Payload> payloads;
+  private Long id;
 
-	public int getId() {
-		return id;
-	}
+  @JsonProperty("payload")
+  private Set<Payload> payloads;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public Set<Payload> getPayloads() {
-		return payloads;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public void setPayloads(Set<Payload> payloads) {
-		this.payloads = payloads;
-	}
+  public Set<Payload> getPayloads() {
+    return payloads;
+  }
+
+  public void setPayloads(Set<Payload> payloads) {
+    this.payloads = payloads;
+  }
 }

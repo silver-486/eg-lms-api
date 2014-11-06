@@ -1,50 +1,50 @@
 package com.picsauditing.employeeguard.lms.model;
 
-import com.google.gson.annotations.SerializedName;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EmployeeResourceAssignment {
 
-	@SerializedName("trainingResourceId")
-	private String trainingResourceId;
+  @JsonProperty("trainingResourceId")
+  private long trainingResourceId;
 
-	@SerializedName("type")
-	private TrainingResourceType trainingResourceType;
+  @JsonProperty("type")
+  private TrainingResourceType trainingResourceType;
 
-	@SerializedName("userId")
-	private String userId;
+  private Long userId;
 
-	@SerializedName("employeeId")
-	private int employeeId;
+  @JsonProperty("employeeId")
+  private long employeeId;
 
-	public String getTrainingResourceId() {
-		return trainingResourceId;
-	}
+  public long getTrainingResourceId() {
+    return trainingResourceId;
+  }
 
-	public void setTrainingResourceId(String trainingResourceId) {
-		this.trainingResourceId = trainingResourceId;
-	}
+  public void setTrainingResourceId(long trainingResourceId) {
+    this.trainingResourceId = trainingResourceId;
+  }
 
-	public TrainingResourceType getTrainingResourceType() {
-		return trainingResourceType;
-	}
+  public TrainingResourceType getTrainingResourceType() {
+    return trainingResourceType;
+  }
 
-	public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
-		this.trainingResourceType = trainingResourceType;
-	}
+  public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
+    this.trainingResourceType = trainingResourceType;
+  }
 
-	public String getUserId() {
-		return userId;
-	}
+  public Long getUserId() {
+    return userId;
+  }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
 
-	public int getEmployeeId() {
-		return employeeId;
-	}
+  public long getEmployeeId() {
+    return employeeId;
+  }
 
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
-	}
+  public void setEmployeeId(int employeeId) {
+    this.employeeId = employeeId;
+  }
 }

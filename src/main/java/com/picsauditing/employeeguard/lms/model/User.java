@@ -1,10 +1,8 @@
 package com.picsauditing.employeeguard.lms.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Locale;
 import java.util.Set;
 

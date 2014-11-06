@@ -1,27 +1,29 @@
 package com.picsauditing.employeeguard.lms.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 public class LaunchLink {
 
-	@SerializedName("TrainingResourceId")
-	private String trainingResourceId;
-	@SerializedName("LaunchUrl")
-	private String launchLink;
+  @JsonProperty("TrainingResourceId")
+  private String trainingResourceId;
 
-	public String getTrainingResourceId() {
-		return trainingResourceId;
-	}
+  @JsonProperty("launchUrl")
+  private String launchLink;
 
-	public void setTrainingResourceId(String trainingResourceId) {
-		this.trainingResourceId = trainingResourceId;
-	}
+  public String getTrainingResourceId() {
+    return trainingResourceId;
+  }
 
-	public String getLaunchLink() {
-		return launchLink;
-	}
+  public void setTrainingResourceId(String trainingResourceId) {
+    this.trainingResourceId = trainingResourceId;
+  }
 
-	public void setLaunchLink(String launchLink) {
-		this.launchLink = launchLink;
-	}
+  public String getLaunchLink() {
+    return launchLink;
+  }
+
+  public void setLaunchLink(String launchLink) {
+    this.launchLink = launchLink;
+  }
 }

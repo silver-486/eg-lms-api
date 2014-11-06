@@ -1,85 +1,92 @@
 package com.picsauditing.employeeguard.lms.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 public class EmployeeTrainingStatus {
 
-	@SerializedName("Id")
-	private String trainingResourceId;
+  @JsonProperty("Id")
+  private String trainingResourceId;
 
-	@SerializedName("Type")
-	private TrainingResourceType trainingResourceType;
+  @JsonProperty("Type")
+  private TrainingResourceType trainingResourceType;
 
-	@SerializedName("UserId")
-	private String userId;
+  private Long userId;
 
-	@SerializedName("EmployeeId")
-	private int picsUserId;
+  @JsonProperty("EmployeeId")
+  private int picsUserId;
 
-	@SerializedName("PercentComplete")
-	private float percentComplete;
+  @JsonProperty("percentComplete")
+  private float percentComplete;
 
-	@SerializedName("Status")
-	private String status;
+  private boolean completed;
 
-	@SerializedName("CompletionDate")
-	private Date completionDate;
+  private String status;
 
-	public String getTrainingResourceId() {
-		return trainingResourceId;
-	}
+  private Date completionDate;
 
-	public void setTrainingResourceId(String trainingResourceId) {
-		this.trainingResourceId = trainingResourceId;
-	}
+  public String getTrainingResourceId() {
+    return trainingResourceId;
+  }
 
-	public TrainingResourceType getTrainingResourceType() {
-		return trainingResourceType;
-	}
+  public void setTrainingResourceId(String trainingResourceId) {
+    this.trainingResourceId = trainingResourceId;
+  }
 
-	public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
-		this.trainingResourceType = trainingResourceType;
-	}
+  public TrainingResourceType getTrainingResourceType() {
+    return trainingResourceType;
+  }
 
-	public String getUserId() {
-		return userId;
-	}
+  public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
+    this.trainingResourceType = trainingResourceType;
+  }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+  public Long getUserId() {
+    return userId;
+  }
 
-	public int getPicsUserId() {
-		return picsUserId;
-	}
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
 
-	public void setPicsUserId(int picsUserId) {
-		this.picsUserId = picsUserId;
-	}
+  public int getPicsUserId() {
+    return picsUserId;
+  }
 
-	public float getPercentComplete() {
-		return percentComplete;
-	}
+  public void setPicsUserId(int picsUserId) {
+    this.picsUserId = picsUserId;
+  }
 
-	public void setPercentComplete(float percentComplete) {
-		this.percentComplete = percentComplete;
-	}
+  public float getPercentComplete() {
+    return percentComplete;
+  }
 
-	public String getStatus() {
-		return status;
-	}
+  public void setPercentComplete(float percentComplete) {
+    this.percentComplete = percentComplete;
+  }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+  public boolean isCompleted() {
+    return completed;
+  }
 
-	public Date getCompletionDate() {
-		return completionDate;
-	}
+  public void setCompleted(boolean completed) {
+    this.completed = completed;
+  }
 
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
-	}
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public Date getCompletionDate() {
+    return completionDate;
+  }
+
+  public void setCompletionDate(Date completionDate) {
+    this.completionDate = completionDate;
+  }
 }

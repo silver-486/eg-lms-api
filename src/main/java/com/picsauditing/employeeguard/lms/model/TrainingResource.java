@@ -1,39 +1,41 @@
 package com.picsauditing.employeeguard.lms.model;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class can represent either a Training Path or a Training Course, as defined by the TrainingResourceType
  */
 public class TrainingResource {
 
-	@SerializedName("Id")
-	private String id;
-	@SerializedName("Type")
-	private TrainingResourceType trainingResourceType;
-	private String title;
+  @JsonProperty("Id")
+  private String id;
 
-	public String getId() {
-		return id;
-	}
+  @JsonProperty("Type")
+  private TrainingResourceType trainingResourceType;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  private String title;
 
-	public TrainingResourceType getTrainingResourceType() {
-		return trainingResourceType;
-	}
+  public String getId() {
+    return id;
+  }
 
-	public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
-		this.trainingResourceType = trainingResourceType;
-	}
+  public void setId(String id) {
+    this.id = id;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  public TrainingResourceType getTrainingResourceType() {
+    return trainingResourceType;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
+    this.trainingResourceType = trainingResourceType;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
 }

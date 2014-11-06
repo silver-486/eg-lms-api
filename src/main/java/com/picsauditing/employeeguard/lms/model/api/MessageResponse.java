@@ -1,46 +1,53 @@
 package com.picsauditing.employeeguard.lms.model.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MessageResponse implements Response {
+public class MessageResponse {
 
-	private int id;
-	private String status;
-	private Set<Response> responses;
-	private int httpStatusCode;
+  private long refId;
 
-	public int getId() {
-		return id;
-	}
+  private String statusCode;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+  @JsonProperty("status")
+  private Set<Status> statuses = new HashSet<>();
 
-	public String getStatus() {
-		return status;
-	}
+  private int httpStatusCode;
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
-	public Set<Response> getResponses() {
-		return responses;
-	}
+  public long getRefId() {
+    return refId;
+  }
 
-	public void setResponses(Set<Response> responses) {
-		this.responses = responses;
-	}
+  public void setRefId(long refId) {
+    this.refId = refId;
+  }
 
-	public int getHttpStatusCode() {
-		return httpStatusCode;
-	}
+  public String getStatusCode() {
+    return statusCode;
+  }
 
-	public void setHttpStatusCode(int httpStatusCode) {
-		this.httpStatusCode = httpStatusCode;
-	}
+  public void setStatusCode(String statusCode) {
+    this.statusCode = statusCode;
+  }
+
+  public Set<Status> getStatuses() {
+    return statuses;
+  }
+
+  public void setStatuses(Set<Status> statuses) {
+    this.statuses = statuses;
+  }
+
+  public int getHttpStatusCode() {
+    return httpStatusCode;
+  }
+
+  public void setHttpStatusCode(int httpStatusCode) {
+    this.httpStatusCode = httpStatusCode;
+  }
 }
