@@ -4,11 +4,13 @@ import com.jayway.restassured.RestAssured;
 import com.picsauditing.employeeguard.lms.JSONHelper;
 import com.picsauditing.employeeguard.lms.LmsStandalone;
 import com.picsauditing.employeeguard.lms.dao.UserRepository;
+import com.picsauditing.employeeguard.lms.main.Mocker;
 import com.picsauditing.employeeguard.lms.model.User;
 import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.Payload;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,11 +33,12 @@ import static com.jayway.restassured.RestAssured.when;
 import static com.picsauditing.employeeguard.lms.model.api.Command.ADD_USER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = LmsStandalone.class)
 @WebAppConfiguration
-@IntegrationTest("server.port:0")
+@IntegrationTest
 public class LmsControllerTest {
 
   @Autowired
@@ -43,6 +46,9 @@ public class LmsControllerTest {
 
   @Autowired
   UserRepository repository;
+
+  @Autowired
+  Mocker mocker;
 
   User user1;
 
@@ -55,14 +61,17 @@ public class LmsControllerTest {
 
   @Test
   public void testRequest() throws Exception {
-    HttpHeaders headers = template.getForEntity("http://localhost:8080/testLms", String.class).getHeaders();
-//    assertThat(headers.getLocation().toString(), containsString("myotherhost"));
+//    HttpHeaders headers = template.getForEntity("http://localhost:8080/testLmsApi", String.class).getHeaders();
+    org.springframework.http.HttpStatus httpStatus = template.getForEntity("http://localhost:8080/testLmsApi", String.class).getStatusCode();
+    System.out.println("httpStatus: "+httpStatus);
+
+    Assert.assertEquals(org.springframework.http.HttpStatus.OK, httpStatus);
   }
 
   @Before
   public void setUp() {
     user1 = new User(1, "mike");
-    user1 = new User(2, "john");
+    user2 = new User(2, "john");
 
     repository.deleteAll();
     repository.save(Arrays.asList(user1, user2));
@@ -74,23 +83,6 @@ public class LmsControllerTest {
   @Test
   public void testUpdate() throws Exception {
 
-  }
-
-  private Message mockerMessageTest() {
-    Message message = new Message();
-    message.setId((long) 1);
-    Payload payload = new Payload();
-
-    User user1 = new User(1, "mike");
-
-    payload.setCommand(ADD_USER);
-    payload.setData(JSONHelper.toJSON(user1));
-
-
-    Set<Payload> payloads = new HashSet<>();
-    payloads.add(payload);
-    message.setPayloads(payloads);
-    return message;
   }
 
 

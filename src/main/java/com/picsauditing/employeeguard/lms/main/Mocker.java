@@ -69,19 +69,28 @@ public class Mocker {
     Message message = new Message();
     message.setId(randomId());
 
-    Payload payload = new Payload();
+
 
     User user1 = mockUser();
+    User user2 = mockUser();
 
-    payload.setCommand(ADD_USER);
-//    payload.setData(toJSON(user1));
-    payload.setId(randomId());
-    payload.setData(JSONHelper.toJSONJackson(user1));
+    Payload payload1 = mockPayload(user1);
+    Payload payload2 = mockPayload(user2);
 
     Set<Payload> payloads = new HashSet<>();
-    payloads.add(payload);
+    payloads.add(payload1);
+    payloads.add(payload2);
+
     message.setPayloads(payloads);
     return message;
+  }
+
+  private Payload mockPayload(User user1) throws JsonProcessingException {
+    Payload payload = new Payload();
+    payload.setCommand(ADD_USER);
+    payload.setId(randomId());
+    payload.setData(JSONHelper.toJSONJackson(user1));
+    return payload;
   }
 
   public long seqId() {

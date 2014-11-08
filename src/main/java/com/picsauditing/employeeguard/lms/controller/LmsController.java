@@ -6,7 +6,6 @@ import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.MessageResponse;
 import com.picsauditing.employeeguard.lms.model.api.Payload;
 import com.picsauditing.employeeguard.lms.service.LmsService;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -66,6 +65,7 @@ class LmsController {
 //    print(message);
 
     MessageResponse messageResponse = lmsService.processMessage(message);
+    messageResponse.setStatusCode(0);
 
     return new ResponseEntity<>(messageResponse, HttpStatus.OK);
   }

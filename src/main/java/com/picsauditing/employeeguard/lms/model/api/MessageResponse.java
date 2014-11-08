@@ -11,7 +11,7 @@ public class MessageResponse {
 
   private long refId;
 
-  private String statusCode;
+  private long statusCode;
 
   @JsonProperty("status")
   private Set<Status> statuses = new HashSet<>();
@@ -27,11 +27,11 @@ public class MessageResponse {
     this.refId = refId;
   }
 
-  public String getStatusCode() {
+  public long getStatusCode() {
     return statusCode;
   }
 
-  public void setStatusCode(String statusCode) {
+  public void setStatusCode(long statusCode) {
     this.statusCode = statusCode;
   }
 
