@@ -33,10 +33,14 @@ class LmsController {
 
     Message message = mocker.mockerMessageTest();
 
-    String url = "http://localhost:8080/lmsApi";
-    MessageResponse messageResponse = httpClientPostMessage(url, message);
+    MessageResponse messageResponse = getMessageResponse(message);
 
     return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+  }
+
+  private MessageResponse getMessageResponse(Message message) throws Exception {
+    String url = "http://localhost:8080/lmsApi";
+    return httpClientPostMessage(url, message);
   }
 
 
@@ -45,7 +49,7 @@ class LmsController {
 
     HttpPost httpost = new HttpPost(url);
 
-    String jsonMsg = JSONHelper.toJSONJackson(message);
+    String jsonMsg = JSONHelper.toJSON(message);
 
     System.out.println("httpClientPostMessage: " + jsonMsg);
 

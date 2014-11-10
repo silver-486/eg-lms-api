@@ -89,7 +89,7 @@ public class Mocker {
     Payload payload = new Payload();
     payload.setCommand(ADD_USER);
     payload.setId(randomId());
-    payload.setData(JSONHelper.toJSONJackson(user1));
+    payload.setData(JSONHelper.toJSON(user1));
     return payload;
   }
 
