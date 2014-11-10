@@ -59,6 +59,11 @@ class LmsController {
     return httpclient.execute(httpost, responseHandler);
   }
 
+  /**
+   * Mothership end point
+   * @param message
+   * @return
+   */
   @RequestMapping("/lmsApi")
   public ResponseEntity<MessageResponse> receiveMessage(@RequestBody Message message) {
 

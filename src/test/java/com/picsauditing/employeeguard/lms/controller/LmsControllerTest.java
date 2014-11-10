@@ -1,17 +1,15 @@
 package com.picsauditing.employeeguard.lms.controller;
 
 import com.jayway.restassured.RestAssured;
-import com.picsauditing.employeeguard.lms.JSONHelper;
 import com.picsauditing.employeeguard.lms.LmsStandalone;
 import com.picsauditing.employeeguard.lms.dao.UserRepository;
 import com.picsauditing.employeeguard.lms.main.Mocker;
 import com.picsauditing.employeeguard.lms.model.User;
-import com.picsauditing.employeeguard.lms.model.api.Message;
-import com.picsauditing.employeeguard.lms.model.api.Payload;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +18,15 @@ import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
-import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.jayway.restassured.RestAssured.when;
-import static com.picsauditing.employeeguard.lms.model.api.Command.ADD_USER;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = LmsStandalone.class)
 @WebAppConfiguration

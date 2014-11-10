@@ -20,9 +20,9 @@ public class WelcomeController {
     return "welcome";
   }
 
-  @RequestMapping("/foo")
+  @RequestMapping("/index")
   public String foo(Map<String, Object> model) {
-    throw new RuntimeException("Foo");
+    return "index";
   }
 
 }

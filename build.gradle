@@ -19,6 +19,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'war'
 apply plugin: 'spring-boot'
+apply plugin: 'idea'
 
 group = 'com.picsauditing.employeeguard.lms'
 version = '0.0.1-SNAPSHOT'
@@ -28,6 +29,23 @@ description = """"""
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+idea {
+    module {
+        iml {
+            withXml {
+                IdeaEnricher.updateWebFacet(this.project, it.asNode())
+            }
+        }
+    }
+    project {
+        ipr {
+            withXml {
+                IdeaEnricher.updateWebArtifacts(this.project, it.asNode())
+                IdeaEnricher.updateBuildOutputFolderForGradle(this.project, it.asNode())
+            }
+        }
+    }
+}
 
 war {
     baseName = 'eg-lms-api'
