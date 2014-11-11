@@ -1,0 +1,32 @@
+# Ignore all dotfiles...
+.*
+# except for .gitignore
+!.gitignore
+
+target/
+!pics-web/src/main/webapp/v7/js/extjs/pics/extjs/src/fx/target
+/bin
+*.iml
+*.log
+*.log.1
+*.tmp
+*.bak
+*.jtl
+*.hprof
+*.idea
+rebel.xml
+rebel-remote.xml
+
+/css
+/ie7
+/images
+/js
+/struts
+/v7
+/.idea
+junitExcelBuilderTest.xls
+
+/pics-web/src/main/webapp/angular/coverage/*
+/pics-web/src/main/webapp/angular/unit.xml
+/pics-web/src/main/webapp/employee-guard/coverage/*
+/pics-web/src/main/webapp/employee-guard/unit.xml
