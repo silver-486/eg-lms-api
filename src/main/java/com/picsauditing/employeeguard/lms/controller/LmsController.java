@@ -40,6 +40,7 @@ class LmsController {
 
   /**
    * Mothership end point
+   *
    * @param message
    * @return
    */

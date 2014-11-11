@@ -3,8 +3,8 @@ package com.picsauditing.employeeguard.lms.model.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MessageResponse {
@@ -14,7 +14,7 @@ public class MessageResponse {
   private long statusCode;
 
   @JsonProperty("status")
-  private Set<Status> statuses = new HashSet<>();
+  private List<Status> statuses = new ArrayList<>();
 
   private int httpStatusCode;
 
@@ -35,11 +35,11 @@ public class MessageResponse {
     this.statusCode = statusCode;
   }
 
-  public Set<Status> getStatuses() {
+  public List<Status> getStatuses() {
     return statuses;
   }
 
-  public void setStatuses(Set<Status> statuses) {
+  public void setStatuses(List<Status> statuses) {
     this.statuses = statuses;
   }
 

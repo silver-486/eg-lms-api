@@ -2,14 +2,14 @@ package com.picsauditing.employeeguard.lms.model.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Set;
+import java.util.List;
 
 public class Message {
 
   private Long id;
 
   @JsonProperty("payload")
-  private Set<Payload> payloads;
+  private List<Payload> payloads;
 
   public Long getId() {
     return id;
@@ -19,11 +19,11 @@ public class Message {
     this.id = id;
   }
 
-  public Set<Payload> getPayloads() {
+  public List<Payload> getPayloads() {
     return payloads;
   }
 
-  public void setPayloads(Set<Payload> payloads) {
+  public void setPayloads(List<Payload> payloads) {
     this.payloads = payloads;
   }
 }

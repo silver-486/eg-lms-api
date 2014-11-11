@@ -7,10 +7,7 @@ import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.Payload;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import static com.picsauditing.employeeguard.lms.model.api.Command.ADD_USER;
 
@@ -77,7 +74,7 @@ public class Mocker {
     Payload payload1 = mockPayload(user1);
     Payload payload2 = mockPayload(user2);
 
-    Set<Payload> payloads = new HashSet<>();
+    List<Payload> payloads = new ArrayList<>();
     payloads.add(payload1);
     payloads.add(payload2);
 
