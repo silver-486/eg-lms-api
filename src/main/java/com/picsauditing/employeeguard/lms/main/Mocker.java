@@ -154,7 +154,14 @@ public class Mocker {
 		return user;
 	}
 
-	public List<Integer> mockIds() {
-		return Arrays.asList(123, 456, 789);
+	public List<Long> mockIds() {
+		return Arrays.asList((long)123, (long)456, (long)789);
+	}
+	public List<Long> mockIds(int count) {
+		List<Long> ids = new ArrayList<>();
+		for (int i=0; i<count; i++) {
+			ids.add(randomId());
+		}
+		return ids;
 	}
 }

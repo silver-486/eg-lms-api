@@ -14,58 +14,80 @@ import java.util.List;
 @Service
 public class MockRequestService {
 
-	@Autowired
-	Mocker mocker;
-	private CommandHandler commandHandler;
+  @Autowired
+  Mocker mocker;
+  private CommandHandler commandHandler;
 
-	@PostConstruct
-	public void init() {
-		commandHandler = buildCommandChain();
-	}
+  @PostConstruct
+  public void init() {
+    commandHandler = buildCommandChain();
+  }
 
-	public Message mockRequest(Command command) throws JsonProcessingException {
+  public Message mockRequest(Command command) throws JsonProcessingException {
 
-		CommandWrapper commandWrapper = new CommandWrapper(command);
-		commandHandler.handleCommand(commandWrapper);
+    CommandWrapper commandWrapper = new CommandWrapper(command);
+    commandHandler.handleCommand(commandWrapper);
 
-		return wrapPayloads(commandWrapper.getPayloads());
-	}
+    return wrapPayloads(commandWrapper.getPayloads());
+  }
 
-	public Message mockRequest(Command... commands) throws JsonProcessingException {
+  public Message mockRequest(Command... commands) throws JsonProcessingException {
 
-		List<Payload> payloads = new ArrayList<>();
-		for (Command command : commands) {
-			CommandWrapper commandWrapper = new CommandWrapper(command);
-			commandHandler.handleCommand(commandWrapper);
-			payloads.addAll(commandWrapper.getPayloads());
-			System.out.println(command.toString() + " : " + commandWrapper.getPayloads());
-		}
+    List<Payload> payloads = new ArrayList<>();
+    for (Command command : commands) {
+      CommandWrapper commandWrapper = new CommandWrapper(command);
+      commandHandler.handleCommand(commandWrapper);
+      payloads.addAll(commandWrapper.getPayloads());
+      System.out.println(command.toString() + " : " + commandWrapper.getPayloads());
+    }
 
-		return wrapPayloads(payloads);
-	}
+    return wrapPayloads(payloads);
+  }
 
-	private Message wrapPayloads(List<Payload> payloads) {
-		Message message = new Message();
-		message.setId(mocker.randomId());
-		message.setPayloads(payloads);
-		return message;
-	}
+  private Message wrapPayloads(List<Payload> payloads) {
+    Message message = new Message();
+    message.setId(mocker.randomId());
+    message.setPayloads(payloads);
+    return message;
+  }
 
-	private CommandHandler buildCommandChain() {
-		CommandHandler commandHandler = new AddPicsAccountCommandHandler();
+  private CommandHandler buildCommandChain() {
+    CommandHandler commandHandler = new AddPicsAccountCommandHandler();
 
-		commandHandler.setNext(new AddUserHandler()
-				.setNext(new DeactivatePicsAccountCommandHandler()
-						.setNext(new DeactivateUserHandler()
-								.setNext(new DeletePicsAccountCommandHandler()
-										.setNext(new DeleteUserHandler()
-												.setNext(new GetAllPicsAccountsByIdsCommandHandler()
-														.setNext(new GetAllUsersIdsCommandHandler()
-																.setNext(new GetPicsAccountsByIdsCommandHandler()
-																		.setNext(new GetUsersByIdHandler()
-																				.setNext(new UpdatePicsAccountCommandHandler()
-																						.setNext(new UpdateUserHandler())))))))))));
-
-		return commandHandler;
-	}
+    commandHandler.setNext(new AddUserHandler()
+        .setNext(new DeactivatePicsAccountCommandHandler()
+            .setNext(new DeactivateUserHandler()
+                .setNext(new DeletePicsAccountCommandHandler()
+                    .setNext(new DeleteUserHandler()
+                        .setNext(new GetAllPicsAccountsByIdsCommandHandler()
+                            .setNext(new GetAllUsersIdsCommandHandler()
+                                .setNext(new GetPicsAccountsByIdsCommandHandler()
+                                    .setNext(new GetUsersByIdHandler()
+                                        .setNext(new UpdatePicsAccountCommandHandler()
+                                            .setNext(new UpdateUserHandler()
+                                                .setNext(new GetAssignmentByCourseIdHandler()
+                                                    .setNext(new GetAssignmentByUserIdHandler()
+                                                        .setNext(new GetAssignmentByUserIdCourseIdHandler()
+                                                            .setNext(new GetAssignmentByIdHandler()
+                                                                .setNext(new GetAllAssignmentsIds()
+                                                                    .setNext(new AssignUserToCourse()
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    );
+    return commandHandler;
+  }
 }

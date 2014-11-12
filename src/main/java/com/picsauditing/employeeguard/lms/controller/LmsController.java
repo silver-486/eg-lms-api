@@ -48,7 +48,13 @@ class LmsController {
       DEACTIVATE_PICS_ACCOUNT,
       DELETE_PICS_ACCOUNT,
       FIND_PICS_ACCOUNT_BY_IDS,
-      GET_ALL_PICS_ACCOUNT_IDS
+      GET_ALL_PICS_ACCOUNT_IDS,
+      GET_ASSIGNMENT_BY_COURSE_ID,
+      GET_ASSIGNMENT_BY_USER_ID,
+      GET_ASSIGNMENT_BY_USER_ID_COURSE_ID,
+      GET_ASSIGNMENT_BY_ID,
+      GET_ALL_ASSIGNMENTS_IDS,
+      ASSIGN_USER_TO_COURSE
     );
 
     MessageResponse messageResponse = apiService.sendMessage(message);

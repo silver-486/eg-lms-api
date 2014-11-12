@@ -18,7 +18,14 @@ public enum Command {
 	DEACTIVATE_PICS_ACCOUNT("deactivatePicsAccount"),
 	DELETE_PICS_ACCOUNT("deletePicsAccount"),
 	FIND_PICS_ACCOUNT_BY_IDS("findPicsAccountByIds"),
-	GET_ALL_PICS_ACCOUNT_IDS("getAllPicsAccountIds");
+	GET_ALL_PICS_ACCOUNT_IDS("getAllPicsAccountIds"),
+	GET_ASSIGNMENT_BY_COURSE_ID("getAssignmentByCourseId"),
+	GET_ASSIGNMENT_BY_USER_ID("getAssignmentByUserId"),
+	GET_ASSIGNMENT_BY_USER_ID_COURSE_ID("getAssignmentByUserIdCourseId"),
+	GET_ASSIGNMENT_BY_ID("getAssignmentById"),
+	GET_ALL_ASSIGNMENTS_IDS("getAllAssignmentsIds"),
+	ASSIGN_USER_TO_COURSE("assignUserToCourse"),
+	;
 
 	String command;
 
