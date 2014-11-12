@@ -1,7 +1,6 @@
 package com.picsauditing.employeeguard.lms.controller;
 
 import com.picsauditing.employeeguard.lms.main.MockRequestService;
-import com.picsauditing.employeeguard.lms.main.Mocker;
 import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.MessageResponse;
 import com.picsauditing.employeeguard.lms.model.api.Payload;
@@ -14,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.picsauditing.employeeguard.lms.model.api.Command.ADD_USER;
+import static com.picsauditing.employeeguard.lms.model.api.Command.UPDATE_USER;
+
 @RestController
 class LmsController {
 
   @Autowired
   LmsService lmsService;
-
-  @Autowired
-  Mocker mocker;
 
   @Autowired
   ApiService apiService;
@@ -35,7 +34,7 @@ class LmsController {
   public ResponseEntity<MessageResponse> testLmsApi() throws Exception {
 
 //    Message message = mocker.mockerMessageTest();
-/    Message message = mockRequestService.mockRequest()
+    Message message = mockRequestService.mockRequest(ADD_USER, UPDATE_USER);
 
     MessageResponse messageResponse = apiService.sendMessage(message);
 

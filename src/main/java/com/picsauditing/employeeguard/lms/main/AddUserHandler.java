@@ -16,7 +16,6 @@ public class AddUserHandler extends CommandHandler {
 			next.handleCommand(commandWrapper);
 		} else {
 			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId(), mocker.mockUser()));
-			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId(), mocker.mockUser()));
 		}
 	}
 }

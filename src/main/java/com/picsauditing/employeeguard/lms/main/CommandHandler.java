@@ -1,14 +1,10 @@
 package com.picsauditing.employeeguard.lms.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
 abstract class CommandHandler {
 
-	@Autowired
-	Mocker mocker;
+	Mocker mocker = new Mocker();
 
 	protected CommandHandler next;
 
