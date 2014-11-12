@@ -15,7 +15,6 @@ public class GetAllUsersIdsCommandHandler extends CommandHandler {
 
 			next.handleCommand(commandWrapper);
 		} else {
-			Mocker mocker = new Mocker();
 			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId()));
 		}
 	}

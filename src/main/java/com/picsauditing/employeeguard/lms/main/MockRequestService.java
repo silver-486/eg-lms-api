@@ -4,14 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.picsauditing.employeeguard.lms.model.api.Command;
 import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.Payload;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MockRequestService {
 
+	@Autowired
+	Mocker mocker;
+	private CommandHandler commandHandler;
+
+	@PostConstruct
+	public void init() {
+		commandHandler = buildCommandChain();
+	}
+
 	public Message mockRequest(Command command) throws JsonProcessingException {
-		CommandHandler commandHandler = buildCommandChain();
 
 		CommandWrapper commandWrapper = new CommandWrapper(command);
 		commandHandler.handleCommand(commandWrapper);
@@ -20,7 +32,6 @@ public class MockRequestService {
 	}
 
 	public Message mockRequest(Command... commands) throws JsonProcessingException {
-		CommandHandler commandHandler = buildCommandChain();
 
 		List<Payload> payloads = new ArrayList<>();
 		for (Command command : commands) {
@@ -34,8 +45,6 @@ public class MockRequestService {
 	}
 
 	private Message wrapPayloads(List<Payload> payloads) {
-		Mocker mocker = new Mocker();
-
 		Message message = new Message();
 		message.setId(mocker.randomId());
 		message.setPayloads(payloads);

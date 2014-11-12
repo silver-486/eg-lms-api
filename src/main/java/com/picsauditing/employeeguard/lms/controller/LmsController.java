@@ -1,5 +1,6 @@
 package com.picsauditing.employeeguard.lms.controller;
 
+import com.picsauditing.employeeguard.lms.main.MockRequestService;
 import com.picsauditing.employeeguard.lms.main.Mocker;
 import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.MessageResponse;
@@ -25,12 +26,16 @@ class LmsController {
   @Autowired
   ApiService apiService;
 
+  @Autowired
+  MockRequestService mockRequestService;
+
   //http://localhost:8080/testLmsApi
   //entry point for testing
   @RequestMapping("/testLmsApi")
   public ResponseEntity<MessageResponse> testLmsApi() throws Exception {
 
-    Message message = mocker.mockerMessageTest();
+//    Message message = mocker.mockerMessageTest();
+/    Message message = mockRequestService.mockRequest()
 
     MessageResponse messageResponse = apiService.sendMessage(message);
 

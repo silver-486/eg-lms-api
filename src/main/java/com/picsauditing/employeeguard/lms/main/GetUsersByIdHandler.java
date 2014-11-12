@@ -2,6 +2,7 @@ package com.picsauditing.employeeguard.lms.main;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.picsauditing.employeeguard.lms.model.api.Command;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class GetUsersByIdHandler extends CommandHandler {
 
@@ -15,7 +16,6 @@ public class GetUsersByIdHandler extends CommandHandler {
 
 			next.handleCommand(commandWrapper);
 		} else {
-			Mocker mocker = new Mocker();
 			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId(), mocker.mockIds()));
 		}
 	}
