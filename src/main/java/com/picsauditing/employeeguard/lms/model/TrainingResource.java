@@ -7,35 +7,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TrainingResource {
 
-  @JsonProperty("Id")
-  private String id;
+	@JsonProperty("Id")
+	private String id;
 
-  @JsonProperty("Type")
-  private TrainingResourceType trainingResourceType;
+	@JsonProperty("Type")
+	private TrainingResourceType trainingResourceType;
 
-  private String title;
+	private String title;
 
-  public String getId() {
-    return id;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public TrainingResourceType getTrainingResourceType() {
-    return trainingResourceType;
-  }
+	public TrainingResourceType getTrainingResourceType() {
+		return trainingResourceType;
+	}
 
-  public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
-    this.trainingResourceType = trainingResourceType;
-  }
+	public void setTrainingResourceType(TrainingResourceType trainingResourceType) {
+		this.trainingResourceType = trainingResourceType;
+	}
 
-  public String getTitle() {
-    return title;
-  }
+	public String getTitle() {
+		return title;
+	}
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

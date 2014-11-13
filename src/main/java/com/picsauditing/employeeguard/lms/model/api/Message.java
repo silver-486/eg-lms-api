@@ -6,24 +6,24 @@ import java.util.List;
 
 public class Message {
 
-  private Long id;
+	private Long id;
 
-  @JsonProperty("payload")
-  private List<Payload> payloads;
+	@JsonProperty("payload")
+	private List<Payload> payloads;
 
-  public Long getId() {
-    return id;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public List<Payload> getPayloads() {
-    return payloads;
-  }
+	public List<Payload> getPayloads() {
+		return payloads;
+	}
 
-  public void setPayloads(List<Payload> payloads) {
-    this.payloads = payloads;
-  }
+	public void setPayloads(List<Payload> payloads) {
+		this.payloads = payloads;
+	}
 }

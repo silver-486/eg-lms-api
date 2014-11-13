@@ -6,22 +6,22 @@ import com.google.gson.annotations.SerializedName;
 
 public enum UserType {
 
-  EMPLOYEE("employee"),
-  LMS_ADMIN("lmsAdmin"),
-  PICS_ADMIN("picsAdmin");
+	EMPLOYEE("employee"),
+	LMS_ADMIN("lmsAdmin"),
+	PICS_ADMIN("picsAdmin");
 
-  String type;
+	String type;
 
-  UserType(String type) {
-    this.type = type;
-  }
+	UserType(String type) {
+		this.type = type;
+	}
 
-  @JsonValue
-  public String getType() {
-    return type;
-  }
+	@JsonValue
+	public String getType() {
+		return type;
+	}
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	public void setType(String type) {
+		this.type = type;
+	}
 }

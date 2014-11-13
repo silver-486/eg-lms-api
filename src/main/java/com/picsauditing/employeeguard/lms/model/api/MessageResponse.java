@@ -9,45 +9,45 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MessageResponse {
 
-  private long refId;
+	private long refId;
 
-  private long statusCode;
+	private long statusCode;
 
-  @JsonProperty("status")
-  private List<Status> statuses = new ArrayList<>();
+	@JsonProperty("status")
+	private List<Status> statuses = new ArrayList<>();
 
-  private int httpStatusCode;
+	private int httpStatusCode;
 
 
-  public long getRefId() {
-    return refId;
-  }
+	public long getRefId() {
+		return refId;
+	}
 
-  public void setRefId(long refId) {
-    this.refId = refId;
-  }
+	public void setRefId(long refId) {
+		this.refId = refId;
+	}
 
-  public long getStatusCode() {
-    return statusCode;
-  }
+	public long getStatusCode() {
+		return statusCode;
+	}
 
-  public void setStatusCode(long statusCode) {
-    this.statusCode = statusCode;
-  }
+	public void setStatusCode(long statusCode) {
+		this.statusCode = statusCode;
+	}
 
-  public List<Status> getStatuses() {
-    return statuses;
-  }
+	public List<Status> getStatuses() {
+		return statuses;
+	}
 
-  public void setStatuses(List<Status> statuses) {
-    this.statuses = statuses;
-  }
+	public void setStatuses(List<Status> statuses) {
+		this.statuses = statuses;
+	}
 
-  public int getHttpStatusCode() {
-    return httpStatusCode;
-  }
+	public int getHttpStatusCode() {
+		return httpStatusCode;
+	}
 
-  public void setHttpStatusCode(int httpStatusCode) {
-    this.httpStatusCode = httpStatusCode;
-  }
+	public void setHttpStatusCode(int httpStatusCode) {
+		this.httpStatusCode = httpStatusCode;
+	}
 }

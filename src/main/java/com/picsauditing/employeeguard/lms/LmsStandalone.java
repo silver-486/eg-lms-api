@@ -18,30 +18,30 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories("com.picsauditing.employeeguard.lms.dao")
 public class LmsStandalone extends SpringBootServletInitializer {
 
-  final static org.apache.log4j.Logger logger = LogManager.getLogger(LmsStandalone.class);
-  private static ConfigurableApplicationContext context;
+	final static org.apache.log4j.Logger logger = LogManager.getLogger(LmsStandalone.class);
+	private static ConfigurableApplicationContext context;
 
 /*
-  @Bean
+	@Bean
   public EntityManagerFactory entityManagerFactory() {
   }
 */
 
 
-  public static void main(String[] args) {
-    context = SpringApplication.run(applicationClass, args);
-  }
+	public static void main(String[] args) {
+		context = SpringApplication.run(applicationClass, args);
+	}
 
-  public LmsStandalone() {
+	public LmsStandalone() {
 
-  }
+	}
 
-  @Override
-  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    return application.sources(applicationClass);
-  }
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(applicationClass);
+	}
 
-  private static Class<LmsStandalone> applicationClass = LmsStandalone.class;
+	private static Class<LmsStandalone> applicationClass = LmsStandalone.class;
 }
 
 

@@ -10,19 +10,19 @@ import java.util.Map;
 @Controller
 public class WelcomeController {
 
-  @Value("${application.message:Hello World}")
-  private String message = "Hello World";
+	@Value("${application.message:Hello World}")
+	private String message = "Hello World";
 
-  @RequestMapping("/")
-  public String welcome(Map<String, Object> model) {
-    model.put("time", new Date());
-    model.put("message", this.message);
-    return "welcome";
-  }
+	@RequestMapping("/")
+	public String welcome(Map<String, Object> model) {
+		model.put("time", new Date());
+		model.put("message", this.message);
+		return "welcome";
+	}
 
-  @RequestMapping("/index")
-  public String foo(Map<String, Object> model) {
-    return "index";
-  }
+	@RequestMapping("/index")
+	public String foo(Map<String, Object> model) {
+		return "index";
+	}
 
 }

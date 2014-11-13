@@ -10,18 +10,18 @@ import java.util.Map;
 @Service
 public class MessageRegistry {
 
-  Map<Long, MessageLog> registry = new HashMap<>();
+	Map<Long, MessageLog> registry = new HashMap<>();
 
-  public void storeMessage(Message message) {
-    registry.put(message.getId(), new MessageLog(message));
-  }
+	public void storeMessage(Message message) {
+		registry.put(message.getId(), new MessageLog(message));
+	}
 
-  public MessageLog retrieveMessageLog(Message message) {
-    return registry.get(message.getId());
-  }
+	public MessageLog retrieveMessageLog(Message message) {
+		return registry.get(message.getId());
+	}
 
-  public Message retrieveMessage(Message message) {
-    return registry.get(message.getId()).getMessage();
-  }
+	public Message retrieveMessage(Message message) {
+		return registry.get(message.getId()).getMessage();
+	}
 
 }

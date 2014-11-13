@@ -1,6 +1,7 @@
 package com.picsauditing.employeeguard.lms.controller;
 
 import com.picsauditing.employeeguard.lms.main.MockRequestService;
+import com.picsauditing.employeeguard.lms.model.api.Command;
 import com.picsauditing.employeeguard.lms.model.api.Message;
 import com.picsauditing.employeeguard.lms.model.api.MessageResponse;
 import com.picsauditing.employeeguard.lms.model.api.Payload;
@@ -18,73 +19,51 @@ import static com.picsauditing.employeeguard.lms.model.api.Command.*;
 @RestController
 class LmsController {
 
-  @Autowired
-  LmsService lmsService;
+	@Autowired
+	LmsService lmsService;
 
-  @Autowired
-  ApiService apiService;
+	@Autowired
+	ApiService apiService;
 
-  @Autowired
-  MockRequestService mockRequestService;
+	@Autowired
+	MockRequestService mockRequestService;
 
-  //http://localhost:8080/testLmsApi
-  //entry point for testing
-  @RequestMapping("/testLmsApi")
-  public ResponseEntity<MessageResponse> testLmsApi() throws Exception {
+	//http://localhost:8080/testLmsApi
+	//entry point for testing
+	@RequestMapping("/testLmsApi")
+	public ResponseEntity<MessageResponse> testLmsApi() throws Exception {
 
 //    Message message = mocker.mockerMessageTest();
-    Message message = mockRequestService.mockRequest(
-      ADD_USER,
-      UPDATE_USER,
-      DEACTIVATE_USER,
-      DELETE_USER,
-      GET_USERS_BY_IDS,
-      GET_ALL_USER_IDS,
-      GET_COURSE_LINK,
-      ASSIGN_EMPLOYEE_TO_TRAINING,
-      GET_LAUNCH_LINK,
-      ADD_PICS_ACCOUNT,
-      UPDATE_PICS_ACCOUNT,
-      DEACTIVATE_PICS_ACCOUNT,
-      DELETE_PICS_ACCOUNT,
-      FIND_PICS_ACCOUNT_BY_IDS,
-      GET_ALL_PICS_ACCOUNT_IDS,
-      GET_ASSIGNMENT_BY_COURSE_ID,
-      GET_ASSIGNMENT_BY_USER_ID,
-      GET_ASSIGNMENT_BY_USER_ID_COURSE_ID,
-      GET_ASSIGNMENT_BY_ID,
-      GET_ALL_ASSIGNMENTS_IDS,
-      ASSIGN_USER_TO_COURSE
-    );
+		Message message = mockRequestService.mockRequest(Command.values());
 
-    MessageResponse messageResponse = apiService.sendMessage(message);
+		MessageResponse messageResponse = apiService.sendMessage(message);
 
-    return new ResponseEntity<>(messageResponse, HttpStatus.OK);
-  }
+		return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+	}
 
 
-  /**
-   * Mothership end point
-   *
-   * @param message
-   * @return
-   */
-  @RequestMapping("/lmsApi")
-  public ResponseEntity<MessageResponse> receiveMessage(@RequestBody Message message) {
+	/**
+	 * Mothership end point
+	 *
+	 * @param message
+	 * @return
+	 */
+	@RequestMapping("/lmsApi")
+	public ResponseEntity<MessageResponse> receiveMessage(@RequestBody Message message) {
 
 //    print(message);
 
-    MessageResponse messageResponse = lmsService.processMessage(message);
-    messageResponse.setStatusCode(0);
+		MessageResponse messageResponse = lmsService.processMessage(message);
+		messageResponse.setStatusCode(0);
 
-    return new ResponseEntity<>(messageResponse, HttpStatus.OK);
-  }
+		return new ResponseEntity<>(messageResponse, HttpStatus.OK);
+	}
 
 
-  private void print(Message msg) {
-    System.out.println("msg.id: " + msg.getId());
-    for (Payload payload : msg.getPayloads()) {
-      System.out.println(payload);
-    }
-  }
+	private void print(Message msg) {
+		System.out.println("msg.id: " + msg.getId());
+		for (Payload payload : msg.getPayloads()) {
+			System.out.println(payload);
+		}
+	}
 }

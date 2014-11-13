@@ -14,43 +14,43 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApiService {
 
-  @Autowired
-  MessageRegistry registry;
+	@Autowired
+	MessageRegistry registry;
 
-  public MessageResponse sendMessage(Message message) throws Exception {
+	public MessageResponse sendMessage(Message message) throws Exception {
 
-    registry.storeMessage(message);
+		registry.storeMessage(message);
 
-    String url = "http://localhost:8080/lmsApi";
-    MessageResponse messageResponse = httpClientPostMessage(url, message);
+		String url = "http://localhost:8080/lmsApi";
+		MessageResponse messageResponse = httpClientPostMessage(url, message);
 
-    processResponse(messageResponse);
+		processResponse(messageResponse);
 
-    return messageResponse;
-  }
+		return messageResponse;
+	}
 
-  private void processResponse(MessageResponse messageResponse) {
-    messageResponse.getStatuses();
-  }
+	private void processResponse(MessageResponse messageResponse) {
+		messageResponse.getStatuses();
+	}
 
 
-  private MessageResponse httpClientPostMessage(String url, Message message) throws Exception {
-    CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+	private MessageResponse httpClientPostMessage(String url, Message message) throws Exception {
+		CloseableHttpClient httpclient = HttpClientBuilder.create().build();
 
-    HttpPost httpost = new HttpPost(url);
+		HttpPost httpost = new HttpPost(url);
 
-    String jsonMsg = JSONHelper.toJSON(message);
+		String jsonMsg = JSONHelper.toJSON(message);
 
-    System.out.println("httpClientPostMessage: " + jsonMsg);
+		System.out.println("httpClientPostMessage: " + jsonMsg);
 
-    StringEntity stringEntity = new StringEntity(jsonMsg);
+		StringEntity stringEntity = new StringEntity(jsonMsg);
 
-    httpost.setEntity(stringEntity);
-    httpost.setHeader("Accept", "application/json");
-    httpost.setHeader("Content-type", "application/json");
+		httpost.setEntity(stringEntity);
+		httpost.setHeader("Accept", "application/json");
+		httpost.setHeader("Content-type", "application/json");
 
-    MessageResponseHandler responseHandler = new MessageResponseHandler();
-    return httpclient.execute(httpost, responseHandler);
-  }
+		MessageResponseHandler responseHandler = new MessageResponseHandler();
+		return httpclient.execute(httpost, responseHandler);
+	}
 
 }

@@ -33,79 +33,79 @@ import static com.jayway.restassured.RestAssured.when;
 @IntegrationTest
 public class LmsControllerTest {
 
-  @Autowired
-  EmbeddedWebApplicationContext server;
+	@Autowired
+	EmbeddedWebApplicationContext server;
 
-  @Autowired
-  UserRepository repository;
+	@Autowired
+	UserRepository repository;
 
-  @Autowired
-  Mocker mocker;
+	@Autowired
+	Mocker mocker;
 
-  User user1;
+	User user1;
 
-  User user2;
+	User user2;
 
-  @Value("${local.server.port}")
-  int port;
+	@Value("${local.server.port}")
+	int port;
 
-  RestTemplate template = new TestRestTemplate();
+	RestTemplate template = new TestRestTemplate();
 
-  @Test
-  public void testRequest() throws Exception {
+	@Test
+	public void testRequest() throws Exception {
 //    HttpHeaders headers = template.getForEntity("http://localhost:8080/testLmsApi", String.class).getHeaders();
-    org.springframework.http.HttpStatus httpStatus = template.getForEntity("http://localhost:8080/testLmsApi", String.class).getStatusCode();
-    System.out.println("httpStatus: "+httpStatus);
+		org.springframework.http.HttpStatus httpStatus = template.getForEntity("http://localhost:8080/testLmsApi", String.class).getStatusCode();
+		System.out.println("httpStatus: " + httpStatus);
 
-    Assert.assertEquals(org.springframework.http.HttpStatus.OK, httpStatus);
-  }
+		Assert.assertEquals(org.springframework.http.HttpStatus.OK, httpStatus);
+	}
 
-  @Before
-  public void setUp() {
-    user1 = new User(1, "mike");
-    user2 = new User(2, "john");
+	@Before
+	public void setUp() {
+		user1 = new User(1, "mike");
+		user2 = new User(2, "john");
 
-    repository.deleteAll();
-    repository.save(Arrays.asList(user1, user2));
+		repository.deleteAll();
+		repository.save(Arrays.asList(user1, user2));
 
-    RestAssured.port = port;
-  }
-
-
-  @Test
-  public void testUpdate() throws Exception {
-
-  }
+		RestAssured.port = port;
+	}
 
 
-  @Test
-  public void canFetchUser() {
-    Long userId = user1.getId();
+	@Test
+	public void testUpdate() throws Exception {
 
-    when().
-      get("/user/{id}", userId).
-      then().
-      statusCode(HttpStatus.SC_OK).
-      body("name", Matchers.is("mike")).
-      body("id", Matchers.is(userId));
-  }
+	}
 
-  @Test
-  public void canFetchAll() {
-    when().
-      get("/user").
-      then().
-      statusCode(HttpStatus.SC_OK).
-      body("name", Matchers.hasItems("mike", "john"));
-  }
 
-  @Test
-  public void canDeleteUser() {
-    Long user1Id = user1.getId();
+	@Test
+	public void canFetchUser() {
+		Long userId = user1.getId();
 
-    when()
-      .delete("/user/{id}", user1Id).
-      then().
-      statusCode(HttpStatus.SC_NO_CONTENT);
-  }
+		when().
+			get("/user/{id}", userId).
+			then().
+			statusCode(HttpStatus.SC_OK).
+			body("name", Matchers.is("mike")).
+			body("id", Matchers.is(userId));
+	}
+
+	@Test
+	public void canFetchAll() {
+		when().
+			get("/user").
+			then().
+			statusCode(HttpStatus.SC_OK).
+			body("name", Matchers.hasItems("mike", "john"));
+	}
+
+	@Test
+	public void canDeleteUser() {
+		Long user1Id = user1.getId();
+
+		when()
+			.delete("/user/{id}", user1Id).
+			then().
+			statusCode(HttpStatus.SC_NO_CONTENT);
+	}
 }

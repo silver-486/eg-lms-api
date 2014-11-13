@@ -63,8 +63,8 @@ public class IdeaEnricher {
 
     def static updateBuildOutputFolderForGradle(Project gradleProject, Node project) {
         def projectRootManager = project.component.find { it.@name == 'ProjectRootManager' } as Node
-        Node output = projectRootManager.output.find{it.@url == 'file://$PROJECT_DIR$/out'}
-        if(output) {
+        Node output = projectRootManager.output.find { it.@url == 'file://$PROJECT_DIR$/out' }
+        if (output) {
             output.@url = 'file://$PROJECT_DIR$/build/ide'
         }
     }

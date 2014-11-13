@@ -8,66 +8,78 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Locale;
 
+@JsonIgnoreProperties({"id"})
 @Entity
 public class Account {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-  private String name;
+	private Long accountId;
 
-  private String contactFirstName;
-  private String contactLastName;
-  private Locale contactLocale;
-  private String contactEmail;
+	private String name;
+
+	private String contactFirstName;
+	private String contactLastName;
+	private Locale contactLocale;
+	private String contactEmail;
 
 
-  public Long getId() {
-    return id;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public String getName() {
-    return name;
-  }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public Long getAccountId() {
+		return accountId;
+	}
 
-  public String getContactFirstName() {
-    return contactFirstName;
-  }
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
 
-  public void setContactFirstName(String contactFirstName) {
-    this.contactFirstName = contactFirstName;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public String getContactLastName() {
-    return contactLastName;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setContactLastName(String contactLastName) {
-    this.contactLastName = contactLastName;
-  }
+	public String getContactFirstName() {
+		return contactFirstName;
+	}
 
-  public Locale getContactLocale() {
-    return contactLocale;
-  }
+	public void setContactFirstName(String contactFirstName) {
+		this.contactFirstName = contactFirstName;
+	}
 
-  public void setContactLocale(Locale contactLocale) {
-    this.contactLocale = contactLocale;
-  }
+	public String getContactLastName() {
+		return contactLastName;
+	}
 
-  public String getContactEmail() {
-    return contactEmail;
-  }
+	public void setContactLastName(String contactLastName) {
+		this.contactLastName = contactLastName;
+	}
 
-  public void setContactEmail(String contactEmail) {
-    this.contactEmail = contactEmail;
-  }
+	public Locale getContactLocale() {
+		return contactLocale;
+	}
+
+	public void setContactLocale(Locale contactLocale) {
+		this.contactLocale = contactLocale;
+	}
+
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
+	}
 }

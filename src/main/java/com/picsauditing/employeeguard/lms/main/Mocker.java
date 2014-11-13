@@ -119,13 +119,14 @@ public class Mocker {
 
 	public User mockUser() {
 		User user = new User();
+		user.setUserId(randomId());
 		user.setEmail("test@tester.com");
 		user.setFirstName("The");
 		user.setLastName("Tester");
-		user.setId(12345678);
+		user.setId(randomId());
 		user.setLocale(Locale.US);
-		user.setAccountIds("123,456");
-		user.setUsername("the.tester");
+		user.setAccountIds("1234,5678");
+		user.setUsername("tester");
 		user.setType(UserType.EMPLOYEE);
 		return user;
 	}
@@ -145,23 +146,35 @@ public class Mocker {
 	public Account mockPicsAccountIdOnly() {
 		Account account = new Account();
 		account.setId(randomId());
+		account.setAccountId(randomId());
 		return account;
 	}
 
 	public User mockUserIdOnly() {
 		User user = new User();
 		user.setId(randomId());
+		user.setUserId(randomId());
 		return user;
 	}
 
 	public List<Long> mockIds() {
-		return Arrays.asList((long)123, (long)456, (long)789);
+		return Arrays.asList((long) 123, (long) 456, (long) 789);
 	}
+
 	public List<Long> mockIds(int count) {
 		List<Long> ids = new ArrayList<>();
-		for (int i=0; i<count; i++) {
+		for (int i = 0; i < count; i++) {
 			ids.add(randomId());
 		}
 		return ids;
+	}
+
+	public User addUserIdGUID(User user) {
+		user.setUserId(randomId());
+		return user;
+	}
+
+	public String randomGUID() {
+		return UUID.randomUUID().toString();
 	}
 }

@@ -15,7 +15,7 @@ public class DeletePicsAccountCommandHandler extends CommandHandler {
 
 			next.handleCommand(commandWrapper);
 		} else {
-			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId(), mocker.mockUserIdOnly()));
+			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId(), mocker.mockPicsAccountIdOnly()));
 		}
 	}
 }

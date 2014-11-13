@@ -14,47 +14,47 @@ import java.io.InputStreamReader;
 
 public class MessageResponseHandler implements ResponseHandler<MessageResponse> {
 
-  @Override
-  public MessageResponse handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    int statusCode = httpResponse.getStatusLine().getStatusCode();
+	@Override
+	public MessageResponse handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		int statusCode = httpResponse.getStatusLine().getStatusCode();
 
-    HttpEntity entity = httpResponse.getEntity();
+		HttpEntity entity = httpResponse.getEntity();
 
-    String json = convertStreamToString(entity.getContent());
-    System.out.println("message response: " + json);
+		String json = convertStreamToString(entity.getContent());
+		System.out.println("message response: " + json);
 
 
 //    MessageResponse messageResponse = mapper.readValue(entity.getContent(), MessageResponse.class);
-    MessageResponse messageResponse = mapper.readValue(json, MessageResponse.class);
-    messageResponse.setHttpStatusCode(statusCode);
+		MessageResponse messageResponse = mapper.readValue(json, MessageResponse.class);
+		messageResponse.setHttpStatusCode(statusCode);
 
-    org.apache.http.Header[] headers = httpResponse.getAllHeaders();
+		org.apache.http.Header[] headers = httpResponse.getAllHeaders();
 
 
-    return messageResponse;
-  }
+		return messageResponse;
+	}
 
-  private static String convertStreamToString(InputStream is) {
+	private static String convertStreamToString(InputStream is) {
 
-    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-    StringBuilder sb = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
 
-    String line = null;
-    try {
-      while ((line = reader.readLine()) != null) {
-        sb.append(line).append("\n");
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    } finally {
-      try {
-        is.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    return sb.toString();
-  }
+		String line = null;
+		try {
+			while ((line = reader.readLine()) != null) {
+				sb.append(line).append("\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return sb.toString();
+	}
 
 }

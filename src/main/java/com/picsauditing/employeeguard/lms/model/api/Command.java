@@ -24,8 +24,7 @@ public enum Command {
 	GET_ASSIGNMENT_BY_USER_ID_COURSE_ID("getAssignmentByUserIdCourseId"),
 	GET_ASSIGNMENT_BY_ID("getAssignmentById"),
 	GET_ALL_ASSIGNMENTS_IDS("getAllAssignmentsIds"),
-	ASSIGN_USER_TO_COURSE("assignUserToCourse"),
-	;
+	ASSIGN_USER_TO_COURSE("assignUserToCourse"),;
 
 	String command;
 

@@ -1,11 +1,11 @@
-define(function(require) {
+define(function (require) {
 
     var ready = require('curl/domReady');
     var connectMessageBus = require('./connectMessageBus');
 
     var bus, sendName, form, connectButton, disconnectButton, responseContainer;
 
-    ready(function() {
+    ready(function () {
         form = document.querySelector('form');
         connectButton = document.querySelector('[data-connect]');
         disconnectButton = document.querySelector('[data-disconnect]');
@@ -17,12 +17,12 @@ define(function(require) {
     });
 
     function connect() {
-        bus = connectMessageBus('//localhost:8080/hello', function() {
+        bus = connectMessageBus('//localhost:8080/hello', function () {
             setConnected(true);
 
             sendName = bus.inboundAdapter('remote!/app/hello', JSON.stringify);
 
-            bus.on('remote!/queue/greetings', function(greeting) {
+            bus.on('remote!/queue/greetings', function (greeting) {
                 addGreeting(JSON.parse(greeting));
             });
         });
@@ -37,7 +37,7 @@ define(function(require) {
         e.preventDefault();
 
         var name = e.target.elements.name.value;
-        sendName({ name: name });
+        sendName({name: name});
     }
 
     function setConnected(connected) {

@@ -1,0 +1,125 @@
+{
+  "id": 2798,
+  "payload": [
+    {
+      "id": 4337,
+      "command": "addUser",
+      "data": {
+        "userId": 8500,
+        "username": "tester",
+        "type": "employee",
+        "accountIds": "1234,5678",
+        "firstName": "The",
+        "lastName": "Tester",
+        "locale": "en_US",
+        "email": "test@tester.com"
+      }
+    },
+    {
+      "id": 5007,
+      "command": "updateUser",
+      "data": {
+        "userId": 9227,
+        "username": "tester",
+        "type": "employee",
+        "accountIds": "1234,5678",
+        "firstName": "The",
+        "lastName": "Tester",
+        "locale": "en_US",
+        "email": "test@tester.com"
+      }
+    },
+    {
+      "id": 4523,
+      "command": "deactivateUser",
+      "data": {"userId": 7538}
+    },
+    {
+      "id": 5019,
+      "command": "deleteUser",
+      "data": {"userId": 6643}
+    },
+    {
+      "id": 5046,
+      "command": "getUsersByIds",
+      "data": "[ 123, 456, 789 ]"
+    },
+    {
+      "id": 1685,
+      "command": "getAllUserIds"
+    },
+    {
+      "id": 8006,
+      "command": "addPicsAccount",
+      "data": {
+        "name": "PICS ACCOUNT",
+        "contactFirstName": "Account",
+        "contactLastName": "Contact",
+        "contactLocale": "de_DE",
+        "contactEmail": "account.email@account.com"
+      }
+    },
+    {
+      "id": 4358,
+      "command": "updatePicsAccount",
+      "data": {
+        "name": "PICS ACCOUNT",
+        "contactFirstName": "Account",
+        "contactLastName": "Contact",
+        "contactLocale": "de_DE",
+        "contactEmail": "account.email@account.com"
+      }
+    },
+    {
+      "id": 2726,
+      "command": "deactivatePicsAccount",
+      "data": {}
+    },
+    {
+      "id": 1147,
+      "command": "deletePicsAccount",
+      "data": {"userId": 8274}
+    },
+    {
+      "id": 9786,
+      "command": "findPicsAccountByIds",
+      "data": "[ 123, 456, 789 ]"
+    },
+    {
+      "id": 6362,
+      "command": "getAllPicsAccountIds"
+    },
+    {
+      "id": 1734,
+      "command": "getAssignmentByCourseId",
+      "data": "[ 123, 456, 789 ]"
+    },
+    {
+      "id": 2934,
+      "command": "getAssignmentByUserId",
+      "data": "[ 123, 456, 789 ]"
+    },
+    {
+      "id": 559,
+      "command": "getAssignmentByUserIdCourseId",
+      "data": "[ 3787, 8168 ]"
+    },
+    {
+      "id": 8984,
+      "command": "getAssignmentById",
+      "data": "[ 7114 ]"
+    },
+    {
+      "id": 2913,
+      "command": "getAllAssignmentsIds"
+    },
+    {
+      "id": 4400,
+      "command": "assignUserToCourse",
+      "data": {
+        "userId": 601,
+        "courseId": 9132
+      }
+    }
+  ]
+}

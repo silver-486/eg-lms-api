@@ -13,8 +13,7 @@ public class GetAllPicsAccountsByIdsCommandHandler extends CommandHandler {
 				return;
 			}
 			next.handleCommand(commandWrapper);
-		}
-		else {
+		} else {
 			commandWrapper.addPayload(mocker.buildPayload(command, mocker.randomId()));
 		}
 	}

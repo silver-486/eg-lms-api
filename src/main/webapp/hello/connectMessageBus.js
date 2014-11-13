@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
 
     var msgs = require('msgs');
     var SockJS = require('sockjs');
@@ -11,7 +11,7 @@ define(function(require) {
         var socket = new SockJS(messageServiceUrl);
 
         socket.addEventListener('open', function () {
-            var bridge = bus.stompWebSocketBridge('remote', socket, { ack: 'client' });
+            var bridge = bus.stompWebSocketBridge('remote', socket, {ack: 'client'});
 
             bridge.controlBus.on('connected', onConnect);
             bridge.controlBus.on('error', function (error) {

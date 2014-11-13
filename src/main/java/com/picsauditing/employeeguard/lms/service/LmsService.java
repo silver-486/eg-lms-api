@@ -12,47 +12,47 @@ import org.springframework.stereotype.Service;
 @Service
 public class LmsService {
 
-  @Autowired
-  private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-  public UserRepository getUserRepository() {
-    return userRepository;
-  }
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
 
-  public void setUserRepository(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-  public void test() {
-    userRepository.save(new User(1, "John"));
+	public void test() {
+		userRepository.save(new User((long) 1, "John"));
 
-    Iterable<User> Users = userRepository.findAll();
-    for (User User : Users) {
-      System.out.println(User);
-    }
-    System.out.println();
-  }
+		Iterable<User> Users = userRepository.findAll();
+		for (User User : Users) {
+			System.out.println(User);
+		}
+		System.out.println();
+	}
 
 
-  public MessageResponse processMessage(Message message) {
-    MessageResponse messageResponse = new MessageResponse();
-    messageResponse.setRefId(message.getId());
+	public MessageResponse processMessage(Message message) {
+		MessageResponse messageResponse = new MessageResponse();
+		messageResponse.setRefId(message.getId());
 
-    for (Payload payload : message.getPayloads()) {
-      Status status = new Status();
-      status.setRefId(payload.getId());
+		for (Payload payload : message.getPayloads()) {
+			Status status = new Status();
+			status.setRefId(payload.getId());
 
-      int statusCode = processPayload(payload);
-      status.setStatusCode(statusCode);
-      messageResponse.getStatuses().add(status);
-    }
+			int statusCode = processPayload(payload);
+			status.setStatusCode(statusCode);
+			messageResponse.getStatuses().add(status);
+		}
 
-    return messageResponse;
-  }
+		return messageResponse;
+	}
 
-  private int processPayload(Payload payload) {
-    //todo Pablo, process payload
-    return Status.OK
-      ;
-  }
+	private int processPayload(Payload payload) {
+		//todo Pablo, process payload
+		return Status.OK
+			;
+	}
 }
