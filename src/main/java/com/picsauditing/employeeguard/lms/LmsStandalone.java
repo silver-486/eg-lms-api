@@ -4,6 +4,8 @@ import com.picsauditing.employeeguard.lms.configuration.SecurityConfiguration;
 import org.apache.log4j.LogManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -24,7 +26,6 @@ public class LmsStandalone extends SpringBootServletInitializer {
 
 	final static org.apache.log4j.Logger logger = LogManager.getLogger(LmsStandalone.class);
 	private static ConfigurableApplicationContext context;
-
 /*
 	@Bean
   public EntityManagerFactory entityManagerFactory() {
