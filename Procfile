@@ -1,1 +1,1 @@
-web: java -jar target/eg-lms-api-0.0.1-SNAPSHOT.jar
+web: java -jar target/*.jar
