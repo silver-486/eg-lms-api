@@ -1,0 +1,5 @@
+File to keep notes between developers
+
+Spring Configuration 
+
+http://www.mkyong.com/spring-security/spring-security-hello-world-annotation-example/
