@@ -1,8 +1,10 @@
 package com.picsauditing.employeeguard.lms.samlHelpers;
 
+import org.apache.commons.httpclient.util.EncodingUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -16,6 +18,7 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +28,7 @@ import java.net.URISyntaxException;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.sql.Blob;
 
 
 public class SalesforceSamlWorker {
@@ -60,6 +64,56 @@ public class SalesforceSamlWorker {
             return null;
             //logger.error("error executing: {}", e.getMessage());
         }
+    }
+
+    private final static String USERNAME = "ssouser@pics.com";
+    private final static String PASSWORD = "Developer$VRP2";
+    private final static String CONSUMER_KEY = "3MVG9xOCXq4ID1uEi1XVpEYYXpmWnCSZjW1r4TfXqoxTa1WHn84b.UcX8wNCA34xunCGqFzrCWTFzGRxXX1.J";
+    private final static String CONSUMER_SECRET = "8142147201556536236";
+    private final static String ENP_POINT_URL = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token";
+    private final static String REQUEST_BODY = "grant_type=password&client_id={0}&client_secret={1}&username={2}&password={3}";
+
+    public static String AuthorizeForApi(){
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try {
+            HttpPost httpPost = new HttpPost(ENP_POINT_URL);
+
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.STRICT);
+            builder.addPart("grant_type", new StringBody("password", ContentType.TEXT_PLAIN));
+            builder.addPart("client_id", new StringBody(CONSUMER_KEY, ContentType.TEXT_PLAIN));
+            builder.addPart("client_secret", new StringBody(CONSUMER_SECRET, ContentType.TEXT_PLAIN));
+            builder.addPart("username", new StringBody(USERNAME, ContentType.TEXT_PLAIN));
+            builder.addPart("password", new StringBody(PASSWORD, ContentType.TEXT_PLAIN));
+            HttpEntity entity = builder.build();
+
+            httpPost.setEntity(entity);
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            InputStream body = httpResponse.getEntity().getContent();
+
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(body));
+            StringBuilder out = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                out.append(line);
+            }
+            logger.debug(out.toString());
+            Header location = httpResponse.getFirstHeader("Location");
+
+            if (null != location) {
+                System.out.println(location.getValue());
+            }
+            String[] parts = out.toString().split(":");
+            return parts[parts.length - 1].replace("\"", "").replace("}", "").replace("{", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("error executing: {}", e.getMessage());
+        } finally {
+            //
+        }
+        return null;
     }
 
     public static String sendSamlRequestForApi(String samlAssertion) {
@@ -104,13 +158,20 @@ public class SalesforceSamlWorker {
         return null;
     }
 
-    public static String CallRestService(String endpoint, String data, String token) {
+    public static String CallRestService(String endpoint, String fieldID, String dataFieldID, String fieldBody, String dataFieldBody, String token) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(endpoint);
-            httpPost.setEntity(new StringEntity(data, "UTF8"));
             httpPost.setHeader("Authorization", "Bearer " + token);
             httpPost.setHeader("Content-type", "application/json");
+
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.STRICT);
+            //builder.addPart(fieldID, new StringBody(dataFieldID, ContentType.TEXT_PLAIN));
+            builder.addPart(fieldBody, new StringBody(dataFieldBody, ContentType.TEXT_PLAIN));
+            HttpEntity entity = builder.build();
+            httpPost.setEntity(entity);
+
             HttpResponse httpResponse = httpclient.execute(httpPost);
 
             InputStream body = httpResponse.getEntity().getContent();
