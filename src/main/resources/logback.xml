@@ -8,9 +8,11 @@
         </encoder>
     </appender>
 
+    <logger name="org.apache.velocity" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
     <logger name="org.opensaml" level="WARN"/>
-    <logger name="org.apache.velocity" level="INFO"/>
-    <logger name="org.vrpinc" level="DEBUG"/>
+    <logger name="com.picsauditing" level="DEBUG"/>
+    <logger name="org.apache.http" level="WARN"/>
 
     <root level="debug">
         <appender-ref ref="STDOUT" />

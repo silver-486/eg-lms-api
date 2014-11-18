@@ -1,11 +1,13 @@
 package com.picsauditing.employeeguard.lms.samlHelpers;
 
+import org.apache.http.HttpHost;
 import org.apache.commons.httpclient.util.EncodingUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -40,6 +43,7 @@ public class SalesforceSamlWorker {
 
     private PrivateKey privateKey;
     private X509Certificate certificate;
+
 
     public static String sendSamlRequest(String samlAssertion) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -73,7 +77,7 @@ public class SalesforceSamlWorker {
     private final static String ENP_POINT_URL = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token";
     private final static String REQUEST_BODY = "grant_type=password&client_id={0}&client_secret={1}&username={2}&password={3}";
 
-    public static String AuthorizeForApi(){
+    public static String AuthorizeForApi() {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(ENP_POINT_URL);
@@ -116,6 +120,7 @@ public class SalesforceSamlWorker {
         return null;
     }
 
+    //deprecated method for SAML-authorization for API using
     public static String sendSamlRequestForApi(String samlAssertion) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
@@ -158,36 +163,44 @@ public class SalesforceSamlWorker {
         return null;
     }
 
-    public static String CallRestService(String endpoint, String fieldID, String dataFieldID, String fieldBody, String dataFieldBody, String token) {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        try {
-            HttpPost httpPost = new HttpPost(endpoint);
-            httpPost.setHeader("Authorization", "Bearer " + token);
-            httpPost.setHeader("Content-type", "application/json");
-
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.setMode(HttpMultipartMode.STRICT);
-            //builder.addPart(fieldID, new StringBody(dataFieldID, ContentType.TEXT_PLAIN));
-            builder.addPart(fieldBody, new StringBody(dataFieldBody, ContentType.TEXT_PLAIN));
-            HttpEntity entity = builder.build();
-            httpPost.setEntity(entity);
-
-            HttpResponse httpResponse = httpclient.execute(httpPost);
-
-            InputStream body = httpResponse.getEntity().getContent();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(body));
-            StringBuilder out = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
+    public static String CallRestService(String type, String endpoint, String[][] params, String token) throws Exception {
+        HttpRequestBase request;
+        if (type.equals("GET")) {
+            request = new HttpGet(endpoint);
+        } else if (type.equals("POST")) {
+            request = new HttpPost(endpoint);
+            if (params != null && params.length > 0 && params[0][0] != null) {
+                for (int i = 0; i < params.length; i++) {
+                    String[] param = params[i];
+                    MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                    builder.setMode(HttpMultipartMode.STRICT);
+                    builder.addPart(param[0], new StringBody(param[1], ContentType.TEXT_PLAIN));
+                    HttpEntity entity = builder.build();
+                    ((HttpPost) request).setEntity(entity);
+                }
+            } else if (params[0][0] == null) {
+                HttpEntity entity = new StringEntity(params[0][1]);
+                ((HttpPost) request).setEntity(entity);
             }
+        } else {
+            throw new Exception("Invalid request type (GET, POST allowed)");
+        }
+        request.setHeader("Authorization", "Bearer " + token);
+        request.setHeader("Content-type", "application/json");
+        request.setHeader("Accept", "application/xml");
 
-            return out.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpResponse httpResponse = httpClient.execute(request);
+
+        InputStream body = httpResponse.getEntity().getContent();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(body));
+        StringBuilder out = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line);
         }
 
-        return null;
+        return out.toString();
     }
 
     public void readCertificate(InputStream inputStream, String alias, String password) throws NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException, KeyStoreException {
@@ -206,7 +219,7 @@ public class SalesforceSamlWorker {
         }
     }
 
-    public String GetAssertion(String username)  throws
+    public String GetAssertion(String username) throws
             ConfigurationException,
             UnrecoverableKeyException,
             InvalidKeyException,
@@ -236,8 +249,7 @@ public class SalesforceSamlWorker {
 
         org.apache.xml.security.Init inint = new org.apache.xml.security.Init();
 
-        logger.debug("ASSERTION: {}",samlAssertion);
+        logger.debug("ASSERTION: {}", samlAssertion);
         return samlAssertion;
-        //return sendSamlRequest(Base64.encodeBytes(samlAssertion.getBytes("UTF-8")));
     }
 }
