@@ -19,7 +19,7 @@ ${exception}
 
     <div>
         <a class="btn btn-danger" href="/j_spring_security_logout">Logout</a>
-        <a class="btn btn-primary" href="${link}">go to salesforce..</a>
+        <a class="btn btn-primary" href="/authAndGotoSF">go to salesforce..</a>
     </div>
     <br/>
 

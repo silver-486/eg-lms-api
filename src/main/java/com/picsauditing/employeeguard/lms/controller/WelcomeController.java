@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URLEncoder;
 import java.util.Date;
@@ -51,6 +52,33 @@ public class WelcomeController {
 
     @RequestMapping("/hello")
     public String hello(Model model) {
+//        String link = new String();
+//        String assertion = new String();
+        String userId = new String();
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                userId = GetUserId(userDetails.getUsername());
+
+//                assertion = new SalesforceSamlWorker().GetAssertion(userId);
+//                link = SalesforceSamlWorker.sendSamlRequest(Base64.encodeBytes(assertion.getBytes("UTF-8")));
+//                String pageName = "Courses";
+//                String currentUrl = "http://localhost:8083/hello";
+//                String accountId = "585212415";
+//                link += "&retURL=apex/RedirectToClient?pname=" + pageName + "?rUrl=" + currentUrl + "?accId=" + accountId;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("exception", e.getMessage());
+        }
+        model.addAttribute("name", userId);
+//        model.addAttribute("link", link);
+        return "hello";
+    }
+
+    @RequestMapping(value = "/authAndGotoSF", method = RequestMethod.GET)
+    public ModelAndView method() {
         String link = new String();
         String assertion = new String();
         String userId = new String();
@@ -69,11 +97,10 @@ public class WelcomeController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("exception", e.getMessage());
+
         }
-        model.addAttribute("name", userId);
-        model.addAttribute("link", link);
-        return "hello";
+        return new ModelAndView("redirect:" + link);
+
     }
 
     @RequestMapping(value = "/callback")
@@ -89,15 +116,13 @@ public class WelcomeController {
         String userId = new String();
         String result = new String();
         //FIXME: figure out where the = comes from
-        data = data.substring(0,data.length()-1)
-        ;
+        data = data.substring(0,data.length()-1);
         if (data == null || data.equals("")) data = testJson;
         try {
             logger.debug("Data before encoding: "+data);
             data = java.net.URLDecoder.decode(data, "UTF-8");
             logger.debug("Data after encoding: "+data);
 
-             //data = StringEscapeUtils.escapeJavaScript(data);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();

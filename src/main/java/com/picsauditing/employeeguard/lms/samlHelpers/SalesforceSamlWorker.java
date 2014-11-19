@@ -187,7 +187,7 @@ public class SalesforceSamlWorker {
         }
         request.setHeader("Authorization", "Bearer " + token);
         request.setHeader("Content-type", "application/json");
-        request.setHeader("Accept", "application/xml");
+        request.setHeader("Accept", "application/json");
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpResponse httpResponse = httpClient.execute(request);
