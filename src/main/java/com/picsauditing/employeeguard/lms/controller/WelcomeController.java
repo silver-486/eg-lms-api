@@ -1,6 +1,8 @@
 package com.picsauditing.employeeguard.lms.controller;
 
+import com.picsauditing.employeeguard.lms.model.dto.Token;
 import com.picsauditing.employeeguard.lms.samlHelpers.SFCommunicationFacade;
+import com.picsauditing.employeeguard.lms.service.TokenRepository;
 import com.picsauditing.employeeguard.lms.service.TokenService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,8 +35,14 @@ public class WelcomeController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private TokenRepository<Token, String> tokenRepository;
+
     @Value("${application.message:Hello World}")
     private String message = "Hello World";
+
+    @Value("${MOTHERSHIP_ORG_ID}")
+    private String mothershipOrgId;
 
     @RequestMapping("/")
     public String welcome(Map<String, Object> model) {
@@ -122,10 +130,10 @@ public class WelcomeController {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
-                String token = sfCommunicationFacade.authorizeForApi();
+                Token token = tokenRepository.findForTenant(mothershipOrgId);
                 String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/sobjects/Request__c");
                 String[][] params = new String[][]{{null, data}};
-                result = sfCommunicationFacade.sendRequest("POST", endpoint, params, token) ;
+                result = sfCommunicationFacade.sendRequest("POST", endpoint, params, token.getAccessToken()) ;
                 JSONObject json = (JSONObject)new JSONParser().parse(result);
                 result = String.format("%1$s: %2$s", json.get("id"), json.get("success"));
             }
@@ -143,11 +151,11 @@ public class WelcomeController {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
-                String token = sfCommunicationFacade.authorizeForApi();
+                Token token = tokenRepository.findForTenant(mothershipOrgId);
                 try {
                     String getparam = "SELECT Id , Response_Body__c , Status__c , External_ID__c From Request__c WHERE ( Status__c = 'Failed' OR Status__c = 'Completed' ) AND External_ID__c = '2312121'";
                     String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/query/?q=%1$s", URLEncoder.encode(getparam, "UTF-8"));
-                    result = sfCommunicationFacade.sendRequest("GET", endpoint, null, token);
+                    result = sfCommunicationFacade.sendRequest("GET", endpoint, null, token.getAccessToken());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
