@@ -118,23 +118,24 @@ public class WelcomeController {
     @RequestMapping(value = "/createitem", method = RequestMethod.POST)
     public
     @ResponseBody
-    String CreateItem(@RequestBody String data, Model model) {
+    String createItem(@RequestBody String data, Model model) {
         String result = new String();
         //FIXME: figure out where the = comes from
         data = data.substring(0, data.length() - 1);
         if (data == null || data.equals("")) data = testJson;
         try {
-            logger.debug("Data before encoding: " + data);
+            logger.debug("loadData before encoding: " + data);
             data = java.net.URLDecoder.decode(data, "UTF-8");
-            logger.debug("Data after encoding: " + data);
+            logger.debug("loadData after encoding: " + data);
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 Token token = tokenRepository.findForTenant(mothershipOrgId);
                 String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/sobjects/Request__c");
                 String[][] params = new String[][]{{null, data}};
-                result = sfCommunicationFacade.sendRequest("POST", endpoint, params, token.getAccessToken()) ;
-                JSONObject json = (JSONObject)new JSONParser().parse(result);
+                result = sfCommunicationFacade.sendRequest("POST", endpoint, params, token);
+                JSONObject json = (JSONObject) new JSONParser().parse(result);
+
                 result = String.format("%1$s: %2$s", json.get("id"), json.get("success"));
             }
         } catch (Exception e) {
@@ -146,7 +147,7 @@ public class WelcomeController {
     @RequestMapping(value = "/getdata", method = RequestMethod.GET)
     public
     @ResponseBody
-    String Data(Model model) {
+    String loadData(Model model) {
         String result = new String();
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -155,7 +156,7 @@ public class WelcomeController {
                 try {
                     String getparam = "SELECT Id , Response_Body__c , Status__c , External_ID__c From Request__c WHERE ( Status__c = 'Failed' OR Status__c = 'Completed' ) AND External_ID__c = '2312121'";
                     String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/query/?q=%1$s", URLEncoder.encode(getparam, "UTF-8"));
-                    result = sfCommunicationFacade.sendRequest("GET", endpoint, null, token.getAccessToken());
+                    result = sfCommunicationFacade.sendRequest("GET", endpoint, null, token);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -164,6 +165,26 @@ public class WelcomeController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * Injects token into repository to allow local development
+     */
+    @RequestMapping(value = "/mocktoken", method = RequestMethod.GET)
+    public void mockTokenSave() {
+        /*
+        aPrx1RSrhEAk35j.0TC9YvKqCCJcZDdQWLk4JqFhu14MOIBnHwjAZt.UB8nYQe1jpOpXlvwSSw==
+2014-11-19T12:47:38.455535+00:00 app[web.1]: 12:47:38.455 [http-nio-32765-exec-7] DEBUG c.p.e.lms.service.TokenService - handleCodeReceive:
+{"id":"https://login.salesforce.com/id/00Do0000000cu4bEAA/005o0000001FdIEAA0","issued_at":"1416401258405","scope":"api web refresh_token","i
+nstance_url":"https://test04-dev-ed.my.salesforce.com","token_type":"Bearer","refresh_token":"5Aep861LNDQReieQSKqIzQvPZuV86FXXkAtJlXP_DpT2rxTgbuqSFlE8uo36Z0UE6gIhCFF.IRH9TbwggvNF3ht","signature":"Cyji+Txw6EKZtsZ5nAZ0BFVkWrw2eLvEQ8UoecCU/fM=","access_token":"00Do0000000cu4b!ARMAQKUCcIJg108MZJ2aHWf7zkIrsobHVD4RFbK4dbiODLMLUciW4qOGsNiMAwQCHMCrtjlZ1Sa8kJuMXQFf0dS0cMn2EWI3"}
+         */
+        Token tkn = new Token();
+        tkn.setId("https://login.salesforce.com/id/00Do0000000cu4bEAA/005o0000001FdIEAA0");
+        tkn.setAccessToken("00Do0000000cu4b!ARMAQKUCcIJg108MZJ2aHWf7zkIrsobHVD4RFbK4dbiODLMLUciW4qOGsNiMAwQCHMCrtjlZ1Sa8kJuMXQFf0dS0cMn2EWI334");
+        //FIXME: this is for development purposes only
+        tkn.setRefreshToken("5Aep861LNDQReieQSKqIzQvPZuV86FXXkAtJlXP_DpT2rxTgbuqSFlE8uo36Z0UE6gIhCFF.IRH9TbwggvNF3ht");
+        tokenRepository.save(tkn);
+        logger.debug("dummy token is saved to repository");
     }
 
 }

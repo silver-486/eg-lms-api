@@ -1,6 +1,7 @@
 package com.picsauditing.employeeguard.lms;
 
 
+import com.picsauditing.employeeguard.lms.model.dto.Token;
 import com.picsauditing.employeeguard.lms.samlHelpers.SFCommunicationFacade;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,11 +34,13 @@ public class TestSSO {
 
 
         String userId = "12345";
-        String token = sfCommunicationFacade.authorizeForApi();
+        String accessTokenStr = sfCommunicationFacade.authorizeForApi();
         String result = null;
         try {
             String getparam = "SELECT Id , Response_Body__c , Status__c , External_ID__c From Request__c WHERE ( Status__c = 'Failed' OR Status__c = 'Completed' ) AND External_ID__c = '2312121'";
             String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/query/?q=%1$s", URLEncoder.encode(getparam, "UTF-8"));
+            Token token = new Token();
+            token.setAccessToken(accessTokenStr);
             result = sfCommunicationFacade.sendRequest("GET", endpoint, null, token);
         } catch (Exception e) {
             e.printStackTrace();

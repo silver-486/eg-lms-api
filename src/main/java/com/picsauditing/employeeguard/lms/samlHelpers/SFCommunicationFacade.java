@@ -1,5 +1,7 @@
 package com.picsauditing.employeeguard.lms.samlHelpers;
 
+import com.picsauditing.employeeguard.lms.model.dto.Token;
+import com.picsauditing.employeeguard.lms.service.TokenService;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +20,8 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -40,6 +44,8 @@ public class SFCommunicationFacade {
 
     private PrivateKey privateKey;
     private X509Certificate certificate;
+    @Autowired
+    private TokenService tokenService;
 
 
     public String sendSamlRequest(String samlAssertion) {
@@ -69,10 +75,14 @@ public class SFCommunicationFacade {
 
     private final static String USERNAME = "ssouser@pics.com";
     private final static String PASSWORD = "Developer$VRP2";
-    private final static String CONSUMER_KEY = "3MVG9xOCXq4ID1uEi1XVpEYYXpmWnCSZjW1r4TfXqoxTa1WHn84b.UcX8wNCA34xunCGqFzrCWTFzGRxXX1.J";
-    private final static String CONSUMER_SECRET = "8142147201556536236";
+
+    @Value("${APPLICATION_CLIENT_ID}")
+    private String CONSUMER_KEY;
+
+    @Value("${APPLICATION_CLIENT_SECRET}")
+    private String CONSUMER_SECRET;
+
     private final static String ENP_POINT_URL = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token";
-    private final static String REQUEST_BODY = "grant_type=password&client_id={0}&client_secret={1}&username={2}&password={3}";
 
     public String authorizeForApi() {
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -163,7 +173,7 @@ public class SFCommunicationFacade {
         return null;
     }
 
-    public String sendRequest(String type, String endpoint, String[][] params, String token) throws Exception {
+    public String sendRequest(String type, String endpoint, String[][] params, Token token) throws Exception {
         HttpRequestBase request;
         if (type.equals("GET")) {
             request = new HttpGet(endpoint);
@@ -185,13 +195,39 @@ public class SFCommunicationFacade {
         } else {
             throw new Exception("Invalid request type (GET, POST allowed)");
         }
-        request.setHeader("Authorization", "Bearer " + token);
+        request.setHeader("Authorization", "Bearer " + token.getAccessToken());
         request.setHeader("Content-type", "application/json");
         request.setHeader("Accept", "application/json");
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpResponse httpResponse = httpClient.execute(request);
+        Header[] headers = httpResponse.getAllHeaders();
+        for( Header h : headers ) {
+            logger.debug("header: {} {}", h.getName(), h.getValue());
+        }
+        String out = readResoponse(httpResponse);
+        //TODO: check out for session invalid message
+        //if access token is invalid,
+        //Token newToken = tokenService.refreshToken(token);
+        //reexecute call
+        logger.debug("response: {}", out);
+        if ( out.contains("INVALID_SESSION_ID")) {
+            logger.warn("access token expired, refreshing the token");
+            Token t2 = tokenService.refreshToken(token);
+            request.setHeader("Authorization", "Bearer " + t2.getAccessToken());
+            httpResponse = httpClient.execute(request);
+            out = readResoponse(httpResponse);
+        }
+        return out;
+    }
 
+    /**
+     * Helper to convert response body to a string
+     * @param httpResponse
+     * @return
+     * @throws IOException
+     */
+    private String readResoponse(HttpResponse httpResponse) throws IOException {
         InputStream body = httpResponse.getEntity().getContent();
         BufferedReader reader = new BufferedReader(new InputStreamReader(body));
         StringBuilder out = new StringBuilder();
@@ -199,8 +235,7 @@ public class SFCommunicationFacade {
         while ((line = reader.readLine()) != null) {
             out.append(line);
         }
-
-        return out.toString();
+        return  out.toString();
     }
 
     private void readCertificate(InputStream inputStream, String alias, String password) throws NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException, KeyStoreException {
