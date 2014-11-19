@@ -15,7 +15,7 @@
 <body>
 ${exception}
 <div class="container">
-    <h1>Hello : ${name}</h1>
+    <h1>Current UserID : ${name}</h1>
 
     <div>
         <a class="btn btn-danger" href="/j_spring_security_logout">Logout</a>

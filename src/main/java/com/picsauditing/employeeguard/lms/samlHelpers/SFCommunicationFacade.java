@@ -1,7 +1,5 @@
 package com.picsauditing.employeeguard.lms.samlHelpers;
 
-import org.apache.http.HttpHost;
-import org.apache.commons.httpclient.util.EncodingUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,32 +18,31 @@ import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.sql.Blob;
 
+@Component
+public class SFCommunicationFacade {
 
-public class SalesforceSamlWorker {
-
-    private static final Logger logger = LoggerFactory.getLogger(SalesforceSamlWorker.class);
-
-    private static String samlAuthApiUrl = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token?so=00Do0000000cu4b";
-    private static String samlAuthUrl = "https://login.salesforce.com?so=00Do0000000cu4b";
+    private final Logger logger = LoggerFactory.getLogger(SFCommunicationFacade.class);
+    private String samlAuthApiUrl = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token?so=00Do0000000cu4b";
+    private String samlAuthUrl = "https://login.salesforce.com?so=00Do0000000cu4b";
 
     private PrivateKey privateKey;
     private X509Certificate certificate;
 
 
-    public static String sendSamlRequest(String samlAssertion) {
+    public String sendSamlRequest(String samlAssertion) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             //logger.debug("saml assertion:\n",samlAssertion);
@@ -77,7 +74,7 @@ public class SalesforceSamlWorker {
     private final static String ENP_POINT_URL = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token";
     private final static String REQUEST_BODY = "grant_type=password&client_id={0}&client_secret={1}&username={2}&password={3}";
 
-    public static String AuthorizeForApi() {
+    public String authorizeForApi() {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(ENP_POINT_URL);
@@ -120,8 +117,11 @@ public class SalesforceSamlWorker {
         return null;
     }
 
-    //deprecated method for SAML-authorization for API using
-    public static String sendSamlRequestForApi(String samlAssertion) {
+    /**
+     * deprecated method for SAML-authorization
+     */
+    @Deprecated
+    public String sendSamlRequestForApi(String samlAssertion) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost(samlAuthApiUrl);
@@ -163,7 +163,7 @@ public class SalesforceSamlWorker {
         return null;
     }
 
-    public static String CallRestService(String type, String endpoint, String[][] params, String token) throws Exception {
+    public String sendRequest(String type, String endpoint, String[][] params, String token) throws Exception {
         HttpRequestBase request;
         if (type.equals("GET")) {
             request = new HttpGet(endpoint);
@@ -203,7 +203,7 @@ public class SalesforceSamlWorker {
         return out.toString();
     }
 
-    public void readCertificate(InputStream inputStream, String alias, String password) throws NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException, KeyStoreException {
+    private void readCertificate(InputStream inputStream, String alias, String password) throws NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException, KeyStoreException {
         KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(inputStream, password.toCharArray());
 
@@ -219,7 +219,7 @@ public class SalesforceSamlWorker {
         }
     }
 
-    public String GetAssertion(String username) throws
+    public String readAssertion(String username) throws
             ConfigurationException,
             UnrecoverableKeyException,
             InvalidKeyException,
@@ -235,7 +235,7 @@ public class SalesforceSamlWorker {
         String strIssuer = "http://adsl-static-233-50.tcm.by";
         String strNameID = username;//"ssouser@pics.com";
 
-        InputStream inputStream = SalesforceSamlWorker.class.getResourceAsStream("/PICS.jks");
+        InputStream inputStream = SFCommunicationFacade.class.getResourceAsStream("/PICS.jks");
         readCertificate(inputStream, "SSO", "123456");
 
         SAMLResponseGenerator responseGenerator = new SalesforceSAMLResponseGenerator(certificate, certificate.getPublicKey(), privateKey, strIssuer, strNameID);
@@ -252,4 +252,5 @@ public class SalesforceSamlWorker {
         logger.debug("ASSERTION: {}", samlAssertion);
         return samlAssertion;
     }
+
 }
