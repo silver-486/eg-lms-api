@@ -44,7 +44,7 @@ ${exception}
                 <br/>
 
                 <td style="vertical-align: bottom; width:100px">
-                    <div style="display: block">
+                    <div style="display: block; width: 100px;">
                         <button class="btn btn-block btn-default" id="clrLog">Clear log</button>
                         <button class="btn btn-primary btn-block" type="button" id="btnPutData">Create</button>
                         <button class="btn btn-primary btn-block" type="button" id="btnGetData">Retrieve</button>
