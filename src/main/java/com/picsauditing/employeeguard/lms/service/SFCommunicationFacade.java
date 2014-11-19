@@ -1,13 +1,12 @@
-package com.picsauditing.employeeguard.lms.samlHelpers;
+package com.picsauditing.employeeguard.lms.service;
 
 import com.picsauditing.employeeguard.lms.model.dto.Token;
-import com.picsauditing.employeeguard.lms.service.TokenService;
+import com.picsauditing.employeeguard.lms.saml.SAMLResponseGenerator;
+import com.picsauditing.employeeguard.lms.saml.SalesforceSAMLResponseGenerator;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -23,13 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -47,7 +41,11 @@ public class SFCommunicationFacade {
     @Autowired
     private TokenService tokenService;
 
-
+    /**
+     * Sends saml assertion for SSO
+     * @param samlAssertion
+     * @return link to Salesforce
+     */
     public String sendSamlRequest(String samlAssertion) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
@@ -71,60 +69,6 @@ public class SFCommunicationFacade {
             return null;
             //logger.error("error executing: {}", e.getMessage());
         }
-    }
-
-    private final static String USERNAME = "ssouser@pics.com";
-    private final static String PASSWORD = "Developer$VRP2";
-
-    @Value("${APPLICATION_CLIENT_ID}")
-    private String CONSUMER_KEY;
-
-    @Value("${APPLICATION_CLIENT_SECRET}")
-    private String CONSUMER_SECRET;
-
-    private final static String ENP_POINT_URL = "https://test04-dev-ed.my.salesforce.com/services/oauth2/token";
-
-    public String authorizeForApi() {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        try {
-            HttpPost httpPost = new HttpPost(ENP_POINT_URL);
-
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.setMode(HttpMultipartMode.STRICT);
-            builder.addPart("grant_type", new StringBody("password", ContentType.TEXT_PLAIN));
-            builder.addPart("client_id", new StringBody(CONSUMER_KEY, ContentType.TEXT_PLAIN));
-            builder.addPart("client_secret", new StringBody(CONSUMER_SECRET, ContentType.TEXT_PLAIN));
-            builder.addPart("username", new StringBody(USERNAME, ContentType.TEXT_PLAIN));
-            builder.addPart("password", new StringBody(PASSWORD, ContentType.TEXT_PLAIN));
-            HttpEntity entity = builder.build();
-
-            httpPost.setEntity(entity);
-            HttpResponse httpResponse = httpclient.execute(httpPost);
-
-            InputStream body = httpResponse.getEntity().getContent();
-
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(body));
-            StringBuilder out = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
-            }
-            logger.debug(out.toString());
-            Header location = httpResponse.getFirstHeader("Location");
-
-            if (null != location) {
-                System.out.println(location.getValue());
-            }
-            String[] parts = out.toString().split(":");
-            return parts[parts.length - 1].replace("\"", "").replace("}", "").replace("{", "");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("error executing: {}", e.getMessage());
-        } finally {
-            //
-        }
-        return null;
     }
 
     /**
@@ -173,27 +117,43 @@ public class SFCommunicationFacade {
         return null;
     }
 
+    /**
+     * Fills up request with parameters
+     * @param params
+     * @return HttpEntity
+     * @throws UnsupportedEncodingException
+     */
+    private HttpEntity FillUpEntity(String[][] params) throws UnsupportedEncodingException {
+        if (params != null && params.length > 0 && params[0][0] != null) {
+            for (int i = 0; i < params.length; i++) {
+                String[] param = params[i];
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.STRICT);
+                builder.addPart(param[0], new StringBody(param[1], ContentType.TEXT_PLAIN));
+                HttpEntity entity = builder.build();
+                return entity;
+            }
+        } else if (params[0][0] == null) {
+            HttpEntity entity = new StringEntity(params[0][1]);
+            return entity;
+        }
+        return null;
+    }
+
     public String sendRequest(String type, String endpoint, String[][] params, Token token) throws Exception {
         HttpRequestBase request;
         if (type.equals("GET")) {
             request = new HttpGet(endpoint);
+        } else if (type.equals("DELETE")) {
+            request = new HttpDelete(endpoint);
         } else if (type.equals("POST")) {
             request = new HttpPost(endpoint);
-            if (params != null && params.length > 0 && params[0][0] != null) {
-                for (int i = 0; i < params.length; i++) {
-                    String[] param = params[i];
-                    MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-                    builder.setMode(HttpMultipartMode.STRICT);
-                    builder.addPart(param[0], new StringBody(param[1], ContentType.TEXT_PLAIN));
-                    HttpEntity entity = builder.build();
-                    ((HttpPost) request).setEntity(entity);
-                }
-            } else if (params[0][0] == null) {
-                HttpEntity entity = new StringEntity(params[0][1]);
-                ((HttpPost) request).setEntity(entity);
-            }
+            ((HttpPost) request).setEntity(FillUpEntity(params));
+        } else if (type.equals("PATCH")) {
+            request = new HttpPatch(endpoint);
+            ((HttpPatch) request).setEntity(FillUpEntity(params));
         } else {
-            throw new Exception("Invalid request type (GET, POST allowed)");
+            throw new Exception("Invalid request type (GET, POST, PATCH, DELETE allowed)");
         }
         request.setHeader("Authorization", "Bearer " + token.getAccessToken());
         request.setHeader("Content-type", "application/json");
@@ -202,7 +162,7 @@ public class SFCommunicationFacade {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpResponse httpResponse = httpClient.execute(request);
         Header[] headers = httpResponse.getAllHeaders();
-        for( Header h : headers ) {
+        for (Header h : headers) {
             logger.debug("header: {} {}", h.getName(), h.getValue());
         }
         String out = readResoponse(httpResponse);
@@ -211,7 +171,7 @@ public class SFCommunicationFacade {
         //Token newToken = tokenService.refreshToken(token);
         //reexecute call
         logger.debug("response: {}", out);
-        if ( out.contains("INVALID_SESSION_ID")) {
+        if (out.contains("INVALID_SESSION_ID")) {
             logger.warn("access token expired, refreshing the token");
             Token t2 = tokenService.refreshToken(token);
             request.setHeader("Authorization", "Bearer " + t2.getAccessToken());
@@ -223,6 +183,7 @@ public class SFCommunicationFacade {
 
     /**
      * Helper to convert response body to a string
+     *
      * @param httpResponse
      * @return
      * @throws IOException
@@ -235,7 +196,7 @@ public class SFCommunicationFacade {
         while ((line = reader.readLine()) != null) {
             out.append(line);
         }
-        return  out.toString();
+        return out.toString();
     }
 
     private void readCertificate(InputStream inputStream, String alias, String password) throws NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException, KeyStoreException {
@@ -254,6 +215,24 @@ public class SFCommunicationFacade {
         }
     }
 
+    /**
+     * Creates SAML assertion for SSO
+     * @param username
+     * @return SAML Assertion
+     * @throws ConfigurationException
+     * @throws UnrecoverableKeyException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws CertificateException
+     * @throws KeyStoreException
+     * @throws NoSuchProviderException
+     * @throws SignatureException
+     * @throws IOException
+     * @throws org.opensaml.xml.signature.SignatureException
+     * @throws URISyntaxException
+     * @throws UnmarshallingException
+     * @throws MarshallingException
+     */
     public String readAssertion(String username) throws
             ConfigurationException,
             UnrecoverableKeyException,

@@ -1,7 +1,7 @@
 package com.picsauditing.employeeguard.lms.controller;
 
 import com.picsauditing.employeeguard.lms.model.dto.Token;
-import com.picsauditing.employeeguard.lms.samlHelpers.SFCommunicationFacade;
+import com.picsauditing.employeeguard.lms.service.SFCommunicationFacade;
 import com.picsauditing.employeeguard.lms.service.TokenRepository;
 import com.picsauditing.employeeguard.lms.service.TokenService;
 import org.json.simple.JSONObject;
@@ -44,6 +44,11 @@ public class WelcomeController {
     @Value("${MOTHERSHIP_ORG_ID}")
     private String mothershipOrgId;
 
+    /**
+     * Temporary variable for saving item id after creating; just for demo
+     */
+    private String itemId;
+
     @RequestMapping("/")
     public String welcome(Map<String, Object> model) {
         model.put("time", new Date());
@@ -56,6 +61,9 @@ public class WelcomeController {
         return "index";
     }
 
+    /**
+     * Example of JSON data
+     */
     private final static String testJson = "{\"External_ID__c\" : \"2312121\", \"Request_Body__c\" : \"{\'id\':\'123456789\',\'payload\':[{\'id\':1,\'Command\':\'addUser\',\'data\':{\'AccountIds\':\'585212415\',\'Type\':\'employee\',\'firstName\':\'John\',\'lastName\':\'Smith\',\'email\':\'JohnSmith@pics.com\',\'UserId\':\'123456789\',\'locale\':\'en_US\'}},{\'id\':2,\'Command\':\'addUser\',\'data\':{\'AccountIds\':\'585212415\',\'type\':\'employee\',\'firstName\':\'Steve\',\'lastName\':\'Lee\',\'email\':\'SteveLee@pics.com\',\'UserId\':\'923456789\',\'locale\':\'en_US\'}},{\'id\':3,\'Command\':\'addUser\',\'data\':{\'AccountIds\':\'213221212\',\'type\':\'employee\',\'firstName\':\'Tony\',\'lastName\':\'Dong\',\'email\':\'TonyDong@pics.com\',\'UserId\':\'2323322323\',\'locale\':\'en_US\'}},{\'id\':4,\'Command\':\'getLearningObjects\'},{\'id\':5,\'Command\':\'getAssignments\'}]}\"}";
 
 
@@ -64,6 +72,11 @@ public class WelcomeController {
         return null;
     }
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping("/hello")
     public String hello(Model model) {
         String userId = "";
@@ -81,6 +94,10 @@ public class WelcomeController {
         return "hello";
     }
 
+    /**
+     * Performs SSO on SF
+     * @return
+     */
     @RequestMapping(value = "/authAndGotoSF", method = RequestMethod.GET)
     public ModelAndView method() {
         String link = new String();
@@ -92,7 +109,7 @@ public class WelcomeController {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 userId = GetUserId(userDetails.getUsername());
 
-                assertion =sfCommunicationFacade.readAssertion(userId);
+                assertion = sfCommunicationFacade.readAssertion(userId);
                 link = sfCommunicationFacade.sendSamlRequest(Base64.encodeBytes(assertion.getBytes("UTF-8")));
                 String pageName = "Courses";
                 String currentUrl = "http://localhost:8083/hello";
@@ -106,6 +123,10 @@ public class WelcomeController {
 
     }
 
+    /**
+     * Method for getting access and refresh tokens
+     * @param code
+     */
     @RequestMapping(value = "/callback")
     public void handleOauthCallback(@RequestParam("code") String code) {
         logger.debug("SF callback: {}", code);
@@ -135,7 +156,7 @@ public class WelcomeController {
                 String[][] params = new String[][]{{null, data}};
                 result = sfCommunicationFacade.sendRequest("POST", endpoint, params, token);
                 JSONObject json = (JSONObject) new JSONParser().parse(result);
-
+                itemId = json.get("id").toString();
                 result = String.format("%1$s: %2$s", json.get("id"), json.get("success"));
             }
         } catch (Exception e) {
@@ -154,9 +175,59 @@ public class WelcomeController {
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 Token token = tokenRepository.findForTenant(mothershipOrgId);
                 try {
-                    String getparam = "SELECT Id , Response_Body__c , Status__c , External_ID__c From Request__c WHERE ( Status__c = 'Failed' OR Status__c = 'Completed' ) AND External_ID__c = '2312121'";
+                    String getparam = "SELECT Id , Response_Body__c , Status__c , External_ID__c From Request__c WHERE ( Status__c = \'Failed\' OR Status__c = \'Completed\' ) AND Status__c != \'Sent To EG\'";
                     String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/query/?q=%1$s", URLEncoder.encode(getparam, "UTF-8"));
                     result = sfCommunicationFacade.sendRequest("GET", endpoint, null, token);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/updatedata", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String updateData(@RequestBody String data, Model model) {
+        String result = new String();
+        //FIXME: figure out where the = comes from
+        data = data.substring(0, data.length() - 1);
+        if (data == null || data.equals("")) data = testJson;
+        try {
+            logger.debug("loadData before encoding: " + data);
+            data = java.net.URLDecoder.decode(data, "UTF-8");
+            logger.debug("loadData after encoding: " + data);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                Token token = tokenRepository.findForTenant(mothershipOrgId);
+                String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/sobjects/Request__c/" + itemId);
+                String[][] params = new String[][]{{null, data}};
+                result = sfCommunicationFacade.sendRequest("PATCH", endpoint, params, token);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    /**
+     *
+     */
+    @RequestMapping(value = "/deletedata", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String deleteData(@RequestBody String data, Model model) {
+        String result = new String();
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                Token token = tokenRepository.findForTenant(mothershipOrgId);
+                try {
+                    String endpoint = String.format("https://test04-dev-ed.my.salesforce.com/services/data/v29.0/sobjects/Request__c/" + itemId);
+                    result = sfCommunicationFacade.sendRequest("DELETE", endpoint, null, token);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

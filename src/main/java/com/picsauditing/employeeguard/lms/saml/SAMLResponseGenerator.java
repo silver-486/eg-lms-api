@@ -1,4 +1,4 @@
-package com.picsauditing.employeeguard.lms.samlHelpers;
+package com.picsauditing.employeeguard.lms.saml;
 
 import org.joda.time.DateTime;
 import org.opensaml.Configuration;
