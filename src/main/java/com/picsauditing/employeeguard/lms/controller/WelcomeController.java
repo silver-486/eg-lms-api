@@ -265,8 +265,8 @@ nstance_url":"https://test04-dev-ed.my.salesforce.com","token_type":"Bearer","re
         Token tkn = new Token();
         tkn.setId("https://login.salesforce.com/id/00Do0000000cu4bEAA/005o0000001FdIEAA0");
         tkn.setAccessToken("00Do0000000cu4b!ARMAQKUCcIJg108MZJ2aHWf7zkIrsobHVD4RFbK4dbiODLMLUciW4qOGsNiMAwQCHMCrtjlZ1Sa8kJuMXQFf0dS0cMn2EWI334");
-        //FIXME: this is for development purposes only
-        tkn.setRefreshToken("5Aep861LNDQReieQSKqIzQvPZuV86FXXkAtJlXP_DpT2rxTgbuqSFlE8uo36Z0UE6gIhCFF.IRH9TbwggvNF3ht");
+        //FIXME: this is for development purposes only, should be taken from running application
+        tkn.setRefreshToken("5Aep861LNDQReieQSKqIzQvPZuV86FXXkAtJlXP_DpT2rxTgbsLeLK3GfWTNulOVBNMTHPlrwJ6HpmkM0S9wdWq");
         tokenRepository.save(tkn);
         logger.debug("dummy token is saved to repository");
     }

@@ -5,6 +5,7 @@
 </head>
 <body>
 <strong>verification code has been exchanged for access token</strong>
+<br/>
 <noformat>
     ${token}
 </noformat>
