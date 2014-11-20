@@ -220,7 +220,7 @@ public class WelcomeController {
     @RequestMapping(value = "/deletedata", method = RequestMethod.POST)
     public
     @ResponseBody
-    String deleteData(@RequestBody String data, Model model) {
+    String deleteData(Model model) {
         String result = new String();
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

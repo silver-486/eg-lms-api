@@ -2,7 +2,7 @@ $(function () {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
     $(document).ajaxSend(function (e, xhr, options) {
-    xhr.setRequestHeader(header, token);
+        xhr.setRequestHeader(header, token);
     });
 });
 
@@ -19,15 +19,15 @@ $('#btnPutData').click(function () {
         success: function (data) {
             data = data.replace(/</g, "&lt;");
             data = data.replace(/>/g, "&gt;");
-            if (data == "" ) data="*nothing to return*";
+            if (data == "") data = "*nothing to return*";
             $('#placeholder').append("<div class=\"alert alert-success\"><strong>Response: </strong> " + data + "</div>");
             $("html, body").animate({scrollTop: $(document).height()}, 1000);
-},
-error: function (data) {
-    $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>Error</div>");
-    $("html, body").animate({scrollTop: $(document).height()}, 1000);
-}
-});
+        },
+        error: function (data) {
+            $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>" + data.responseText + "</div>");
+            $("html, body").animate({scrollTop: $(document).height()}, 1000);
+        }
+    });
 });
 
 $('#btnGetData').click(function () {
@@ -37,15 +37,15 @@ $('#btnGetData').click(function () {
         success: function (data) {
             data = data.replace(/</g, "&lt;");
             data = data.replace(/>/g, "&gt;");
-            if (data == "" ) data="*nothing to return*";
+            if (data == "") data = "*nothing to return*";
             $('#placeholder').append("<div class=\"alert alert-success\"><strong>Response: </strong> " + data + "</div>");
             $("html, body").animate({scrollTop: $(document).height()}, 1000);
-},
-error: function (data) {
-    $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>Error</div>");
-    $("html, body").animate({scrollTop: $(document).height()}, 1000);
-}
-});
+        },
+        error: function (data) {
+            $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>" + data.responseText + "</div>");
+            $("html, body").animate({scrollTop: $(document).height()}, 1000);
+        }
+    });
 });
 
 $('#btnUpdData').click(function () {
@@ -56,15 +56,15 @@ $('#btnUpdData').click(function () {
         success: function (data) {
             data = data.replace(/</g, "&lt;");
             data = data.replace(/>/g, "&gt;");
-            if (data == "" ) data="*nothing to return*";
+            if (data == "") data = "*nothing to return*";
             $('#placeholder').append("<div class=\"alert alert-success\"><strong>Response: </strong> " + data + "</div>");
             $("html, body").animate({scrollTop: $(document).height()}, 1000);
-},
-error: function (data) {
-    $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>Error</div>");
-    $("html, body").animate({scrollTop: $(document).height()}, 1000);
-}
-});
+        },
+        error: function (data) {
+            $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>" + data.responseText + "</div>");
+            $("html, body").animate({scrollTop: $(document).height()}, 1000);
+        }
+    });
 });
 
 $('#btnDelData').click(function () {
@@ -74,29 +74,29 @@ $('#btnDelData').click(function () {
         success: function (data) {
             data = data.replace(/</g, "&lt;");
             data = data.replace(/>/g, "&gt;");
-            if (data == "" ) data="*nothing to return*";
+            if (data == "") data = "*nothing to return*";
             $('#placeholder').append("<div class=\"alert alert-success\"><strong>Response: </strong> " + data + "</div>");
             $("html, body").animate({scrollTop: $(document).height()}, 1000);
-},
-error: function (data) {
-    $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>Error</div>");
-    $("html, body").animate({scrollTop: $(document).height()}, 1000);
-}
-});
+        },
+        error: function (data) {
+            $('#placeholder').append("<div class=\"alert alert-danger\"><strong>Response: </strong>" + data.responseText + "</div>");
+            $("html, body").animate({scrollTop: $(document).height()}, 1000);
+        }
+    });
 });
 
 $('#clrLog').click(function () {
     $('#placeholder').text("");
-    });
+});
 
 $('#setCreateJson').click(function () {
     $('#request_json').val(jsonForCreate);
-    });
+});
 
 $('#setUpdateJson').click(function () {
     $('#request_json').val(jsonForUpdate);
-    });
+});
 
 $('#clrJson').click(function () {
     $('#request_json').val("");
-    });
+});
