@@ -92,7 +92,7 @@ public class WelcomeController {
 
 			CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 			if (csrfToken != null) {
-				model.addAttribute("_csrf",csrfToken);
+				model.addAttribute("_csrf", csrfToken);
 			}
 
         } catch (Exception e) {
@@ -139,11 +139,13 @@ public class WelcomeController {
      * @param code
      */
     @RequestMapping(value = "/callback")
-    public void handleOauthCallback(@RequestParam("code") String code) {
+    public String handleOauthCallback(Model model, @RequestParam("code") String code) {
         logger.debug("SF callback: {}", code);
         //Web Server Exchanges Verification Code for Access Token
-        tokenService.handleCodeReceive(code);
+		model.addAttribute("token",tokenService.handleCodeReceive(code));
         logger.info("new access token is provisioned and stored in token repository");
+		return "callback";
+
     }
 
 
