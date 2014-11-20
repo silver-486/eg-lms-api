@@ -13,6 +13,7 @@
     <logger name="org.opensaml" level="WARN"/>
     <logger name="com.picsauditing" level="DEBUG"/>
     <logger name="org.apache.http" level="WARN"/>
+    <logger name="com.picsauditing.employeeguard.lms" level="debug"/>
 
     <root level="debug">
         <appender-ref ref="STDOUT" />

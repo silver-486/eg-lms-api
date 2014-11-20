@@ -21,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -140,6 +142,7 @@ public class SFCommunicationFacade {
         return null;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String sendRequest(String type, String endpoint, String[][] params, Token token) throws Exception {
         HttpRequestBase request;
         if (type.equals("GET")) {
