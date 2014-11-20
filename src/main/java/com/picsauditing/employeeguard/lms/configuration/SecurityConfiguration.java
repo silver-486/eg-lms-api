@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @author: sergey.emelianov
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled=false)
 public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
@@ -30,9 +30,11 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
    	http.authorizeRequests()
 				.antMatchers("/**").access("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
 				.and()
-					.formLogin();
-//				.and()
-//					.logout().logoutSuccessUrl("/enter?logout");
+					.formLogin()
+				.and()
+					.logout().logoutSuccessUrl("/login?out")
+				.and()
+					.csrf();
 	}
 
 }

@@ -14,6 +14,7 @@
     <logger name="com.picsauditing" level="DEBUG"/>
     <logger name="org.apache.http" level="WARN"/>
     <logger name="com.picsauditing.employeeguard.lms" level="debug"/>
+    <logger name="org.springframework.web.servlet" level="debug"/>
 
     <root level="debug">
         <appender-ref ref="STDOUT" />

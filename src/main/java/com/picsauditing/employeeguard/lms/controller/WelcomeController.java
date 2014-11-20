@@ -11,15 +11,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Map;
@@ -78,7 +81,7 @@ public class WelcomeController {
      * @return
      */
     @RequestMapping("/hello")
-    public String hello(Model model) {
+    public String hello(Model model, HttpServletRequest request) {
         String userId = "";
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -86,10 +89,18 @@ public class WelcomeController {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
                 userId = GetUserId(userDetails.getUsername());
             }
+
+			CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+			if (csrfToken != null) {
+				model.addAttribute("_csrf",csrfToken);
+			}
+
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("exception", e.getMessage());
         }
+
+
         model.addAttribute("name", userId);
         return "hello";
     }

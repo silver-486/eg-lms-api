@@ -9,12 +9,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
 /**
  * Created by vladislav.tolkach on 11/20/2014.
@@ -22,20 +30,24 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages="com.picsauditing.employeeguard")
-@EnableAutoConfiguration(exclude = VelocityAutoConfiguration.class)
+@EnableAutoConfiguration
 @EntityScan(basePackages = "com.picsauditing.employeeguard.lms.model")
 @EnableJpaRepositories("com.picsauditing.employeeguard.lms.dao")
-@EnableWebMvc
 @Import(SecurityConfiguration.class)
 public class LmsSpringConfiguration extends WebMvcConfigurerAdapter {
 
-    @Bean(name = "defaultViewResolver")
-    public ViewResolver getViewResolver() {
-        InternalResourceViewResolver ivr = new InternalResourceViewResolver();
-//        /ivr.setViewClass(JstlView.class);
-        ivr.setPrefix("/WEB-INF/jsp/");
-        ivr.setSuffix(".jsp");
-        return  ivr;
-    }
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		configurer.enable();
+	}
+
+
+	// equivalents for <mvc:resources/> tags
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
+		registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
+		registry.addResourceHandler("/staic/js/**").addResourceLocations("/staic/js/").setCachePeriod(31556926);
+	}
 
 }

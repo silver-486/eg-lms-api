@@ -152,7 +152,7 @@ public class TokenService {
             log.debug("token updated in repository");
         } catch ( HttpStatusCodeException re ) {
             re.printStackTrace();
-            log.error("can't process refresh token request: ", re.getResponseBodyAsString());
+            log.error("can't process refresh token request: {} ", re.getResponseBodyAsString());
 
         } catch (JSONException e) {
             log.error("can't convert refresh token from response", e.getMessage());
