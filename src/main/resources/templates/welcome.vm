@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>PICS Prototype App</title>
+</head>
+<body>
+    <h2>Demonstration</h2>
+    <a href="/hello/"> Demo SF Integration Page</a><br/>
+    <a href="/testLmsApi/"> LmsApi Test Page</a><br/>
+    <a href="/lmsApi/"> LmsApi Page</a><br/>
+<p/>
+    <h2>Development Only</h2>
+    <a href="/mocktoken">Mock Token</a><br/>
+</body>

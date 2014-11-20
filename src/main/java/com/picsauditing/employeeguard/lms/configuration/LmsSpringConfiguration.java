@@ -41,12 +41,15 @@ public class LmsSpringConfiguration extends WebMvcConfigurerAdapter {
 		configurer.enable();
 	}
 
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("welcome");
+	}
+
 
 	// equivalents for <mvc:resources/> tags
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
-		registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
 		registry.addResourceHandler("/staic/js/**").addResourceLocations("/staic/js/").setCachePeriod(31556926);
 	}
 

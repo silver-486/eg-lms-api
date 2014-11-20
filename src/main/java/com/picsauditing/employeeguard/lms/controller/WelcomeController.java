@@ -52,18 +52,6 @@ public class WelcomeController {
      */
     private String itemId;
 
-    @RequestMapping("/")
-    public String welcome(Map<String, Object> model) {
-        model.put("time", new Date());
-        model.put("message", this.message);
-        return "welcome";
-    }
-
-    @RequestMapping("/index")
-    public String foo(Map<String, Object> model) {
-        return "index";
-    }
-
     /**
      * Example of JSON data
      */

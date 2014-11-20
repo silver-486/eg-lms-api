@@ -24,7 +24,7 @@
 <div class="container">
     <h1>Current UserID : ${name}</h1>
     <div>
-        <a class="btn btn-danger" href="/j_spring_security_logout">Logout</a>
+        <a class="btn btn-danger" href="/login?logout">Logout</a>
         <a class="btn btn-info" href="/authAndGotoSF">SSO using SAML (for users)</a>
         <a class="btn btn-info" href="https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG9xOCXq4ID1uEi1XVpEYYXpmWnCSZjW1r4TfXqoxTa1WHn84b.UcX8wNCA34xunCGqFzrCWTFzGRxXX1.J
 &redirect_uri=https%3A%2F%2Fpolar-river-8354.herokuapp.com%2Fcallback">Authorize with OAuth (for API)</a>
